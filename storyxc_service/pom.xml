@@ -24,4 +24,33 @@
         </dependency>
     </dependencies>
 
+
+    <build>
+        <!--finalName指定最终生成Jar包的名称，如果不指定，则为前面配置
+         artifactId+version（energy.0.0.1-SNAPSHOT.jar）作为jar包的名称-->
+        <finalName>storyxc</finalName>
+        <!--配置资源-->
+        <!--<resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>application*.properties</exclude>
+                    <exclude>conf/dev/*</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/conf/${profileActive}</directory>
+            </resource>
+        </resources>-->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>   <!--热部署-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
