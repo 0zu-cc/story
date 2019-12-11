@@ -1,0 +1,10 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: storyxc
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.105.191.71:3306/story?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: Barcelona
