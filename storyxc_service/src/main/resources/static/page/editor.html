@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>markdown编辑器 - 故事而已</title>
+    <link rel="stylesheet" href="../plugin/editor.md/css/editormd.css"/>
+    <link rel="stylesheet" href="../plugin/elementui/index.css"/>
+    <style>
+        div {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-<link rel="stylesheet" href="../plugin/editor.md/css/editormd.css"/>
-<link rel="stylesheet" href="../plugin/elementui/index.css"/>
-<style>
-    div {
-        display: block;
-    }
-</style>
 <div id="app">
     <div style="margin-top: 15px">
         <el-input placeholder="请输入内容" v-model="article.articleTitle">

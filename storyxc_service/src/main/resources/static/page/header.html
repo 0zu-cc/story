@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<header id="header">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <div id="toolbar">
+        <!-- 未登录状态  -->
+        <div class="login_out">
+            <a href="/page/login.html">登录</a>
+            <a href="/page/register.html">注册</a>
+        </div>
+        <!-- 登录状态  -->
+        <div class="login" style="display: none" >
+            <span>欢迎回来，admin</span>
+            <a href="user?action=logout">退出</a>
+        </div>
+    </div>
+</header>
