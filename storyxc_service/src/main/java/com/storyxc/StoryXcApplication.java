@@ -13,7 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @createdTime 2019/12/11 15:24
  */
 @SpringBootApplication
-@MapperScan("com.storyxc.dao")
+@MapperScan("com.storyxc.mapper")
 public class StoryXcApplication {
     private static final Logger logger = LoggerFactory.getLogger(StoryXcApplication.class);
     public static void main(String[] args) {
