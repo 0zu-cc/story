@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.storyxc.dao.ArticleDao">
+
+    <insert id="addArticle" parameterType="article">
+        INSERT INTO `story`.`story_article` (
+	        `article_title`,
+	        `article_catagory`,
+	        `article_main`,
+	        `article_desc`,
+	        `article_url`,
+	        `author_code`,
+	        `create_time`,
+	        `edit_time`,
+	        `view_count`,
+	        `comment_count`,
+	        `status`)
+        VALUES (
+		    #{articleTitle},
+		    #{articleCatagory},
+		    #{articleMain},
+		    #{articleDesc},
+		    #{articleUrl},
+		    #{authorCode},
+		    #{createTime},
+		    #{editTime},
+		    #{viewCount},
+		    #{commentCount},
+		    #{status});
+    </insert>
+</mapper>

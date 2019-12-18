@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 spring:
   application:
     name: storyxc
@@ -8,3 +8,13 @@ spring:
     url: jdbc:mysql://39.105.191.71:3306/story?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: Barcelona
+logging:
+  level:
+    com.storyxc.dao.*: debug
+    com.storyxc.controller.*: error
+    com.storyxc.service.*: error
+  file:
+    max-size: 100MB
+mybatis:
+  mapper-locations: classpath:dao/*.xml
+  type-aliases-package: com.storyxc.pojo
