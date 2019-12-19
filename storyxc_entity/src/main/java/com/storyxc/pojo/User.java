@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /****
  * @Author:Xc
@@ -18,7 +19,9 @@ public class User implements Serializable {
     private String password;
     private String sex;
     private String phone;
+    private String email;
     private Date createdTime;
     private String headPic;
     private Date lastLogin;
+    private List<Role> roles;
 }

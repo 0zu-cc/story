@@ -1,6 +1,6 @@
 package com.storyxc.service.impl;
 
-import com.storyxc.dao.ArticleDao;
+import com.storyxc.mapper.ArticleDao;
 import com.storyxc.pojo.Article;
 import com.storyxc.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;

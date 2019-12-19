@@ -1,4 +1,4 @@
-package com.storyxc.dao;
+package com.storyxc.mapper;
 
 import com.storyxc.pojo.Article;
 

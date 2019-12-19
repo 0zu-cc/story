@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iu - 故事而已</title>
+    <link href="../img/story.ico" rel="shortcut icon">
+    <style>
+        #home {
+            margin: 100px auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div>
+    <!--canvas-nest-->
+    </div>
+
+    <div id="home">
+        <img id="iu" src="../img/1.jpg" alt="iu" width="400px">
+    </div>
+</div>
+<script src="../js/canvas-nest.js"></script>
+<script src='../js/jquery.min.js'></script>
+</body>
+<script>
+    let iu = document.getElementById("iu");
+    let i = 1;
+    function changePic() {
+        iu.src = "../img/"+i +".jpg";
+        i++;
+        if(i===9){
+            i = 1;
+        }
+    }
+    setInterval(changePic,1500);
+</script>
+</html>
