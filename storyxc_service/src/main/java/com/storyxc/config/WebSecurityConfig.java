@@ -31,11 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()// 该方法所返回的对象的方法来配置请求级别的安全细节
           // .antMatchers("/page/editor.html", "/page/management.html","/editor","/management").authenticated()//编辑器和管理后台需要拦截
            .antMatchers("/page/editor.html", "/page/management.html","/editor","/management").hasRole("ADMIN")
-           .antMatchers("/page/login.html").permitAll() // 登录页面不拦截
+           .antMatchers("/login").permitAll() // 登录页面不拦截
            .anyRequest().permitAll() //其他所有不拦截
            .antMatchers(HttpMethod.POST, "/login").permitAll()// 对于登录路径不进行拦截
            .and().formLogin()// 配置登录页面
-           .loginPage("/page/login.html")// 登录页面的访问路径;
+           .loginPage("/login")// 登录页面的访问路径;
            .loginProcessingUrl("/login")// 登录页面下表单提交的路径
            .failureUrl("/login?paramserror=true")// 登录失败后跳转的路径,为了给客户端提示
            .and().logout().logoutUrl("/logout")// 用户退出
