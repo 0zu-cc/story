@@ -180,11 +180,7 @@
             <div class="clear"></div>
         </div>
         <!--end: main-->
-        <div id="footer">
-            Copyright © 2019 故事而已
-            <br/>
-            <span id="poweredby">Powered by Java</span>
-        </div>
+        <div id="footer"></div>
     </div>
     <!--end: home-->
 </div>
@@ -219,10 +215,10 @@
 </script>
 <script>
     $(function () {
-        $.get("header.html", function (data) {
+        $.get("/page/header.html", function (data) {
             $("#header").html(data);
         });
-        $.get("footer.html", function (data) {
+        $.get("/page/footer.html", function (data) {
             $("#footer").html(data);
         });
     });
