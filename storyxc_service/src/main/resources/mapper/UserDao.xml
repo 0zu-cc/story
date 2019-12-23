@@ -28,6 +28,19 @@
         </collection>
     </resultMap>
 
+
+    <select id="findByUsername" resultMap="userRolePermissionMap" parameterType="string">
+        select u.*,
+             ur.role_id, r.name as role_name, r.keyword as role_keyword,
+             rp.permission_id, p.name as perimssion_name, p.keyword as permission_keyword
+        from story_user u
+        inner join story_role_user ur on u.id=ur.user_id
+        inner join story_role r on r.id=ur.role_id
+        inner join story_role_permission rp on r.id=rp.role_id
+        inner join story_permission p on p.id=rp.permission_id
+        where u.username=#{username}
+    </select>
+
     <insert id="addUser" parameterType="user">
         <selectKey resultType="int" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID()

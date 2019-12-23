@@ -5,6 +5,7 @@ import com.storyxc.entity.StatusCode;
 import com.storyxc.pojo.Article;
 import com.storyxc.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public Result addArticle(@RequestBody Article article){
         article.setArticleCatagory("test");

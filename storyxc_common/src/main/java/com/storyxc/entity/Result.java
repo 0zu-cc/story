@@ -32,6 +32,11 @@ public class Result<T> {
         this.message = "操作成功!";
     }
 
+    public Result(boolean flag, String message) {
+        this.flag = flag;
+        this.message = message;
+    }
+
     public boolean isFlag() {
         return flag;
     }

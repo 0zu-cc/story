@@ -13,5 +13,5 @@ public interface UserDao {
 
     void setUserRole(@Param("userId")Integer userId,@Param("roleId") Integer roleId);
 
-    User queryUserByUsername(String username);
+    User findByUsername(String username);
 }

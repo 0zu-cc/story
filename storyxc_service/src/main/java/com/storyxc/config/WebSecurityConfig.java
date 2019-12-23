@@ -1,11 +1,15 @@
 package com.storyxc.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -15,7 +19,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) //开启注解支持
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserDetailsService storyUserDetailsService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /***
      * 采用BCryptPasswordEncoder对密码进行编码
@@ -32,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           // .antMatchers("/page/editor.html", "/page/management.html","/editor","/management").authenticated()//编辑器和管理后台需要拦截
            .antMatchers("/editor","/management").hasRole("ADMIN")
            .antMatchers("/login").permitAll() // 登录页面不拦截
-           .anyRequest().permitAll() //其他所有不拦截
+           .anyRequest().permitAll()
            .antMatchers(HttpMethod.POST, "/login").permitAll()// 对于登录路径不进行拦截
            .and().formLogin()// 配置登录页面
            .loginPage("/login")// 登录页面的访问路径;
@@ -45,5 +56,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
            .csrf().disable()
            .headers().frameOptions()// 允许iframe内呈现。
            .sameOrigin();
+
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(storyUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 }

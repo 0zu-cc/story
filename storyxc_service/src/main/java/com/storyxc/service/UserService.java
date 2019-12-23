@@ -10,5 +10,5 @@ import com.storyxc.pojo.User;
 public interface UserService {
     void addUser(User user, Integer[] roleIds);
 
-    User queryUserByUsername(String username);
+    User findByUsername(String username);
 }

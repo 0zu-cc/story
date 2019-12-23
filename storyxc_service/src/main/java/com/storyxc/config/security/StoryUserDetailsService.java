@@ -1,4 +1,4 @@
-package com.storyxc.security;
+package com.storyxc.config.security;
 
 import com.storyxc.pojo.Permission;
 import com.storyxc.pojo.Role;
@@ -28,7 +28,7 @@ public class StoryUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.queryUserByUsername(username);
+        User user = userService.findByUsername(username);
         if (user == null) {
             return null;
         }
