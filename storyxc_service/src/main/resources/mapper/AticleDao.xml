@@ -3,13 +3,52 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.storyxc.mapper.ArticleDao">
 
+	<resultMap id="articleMap" type="com.storyxc.pojo.Article">
+		<id column="article_id" property="id"/>
+		<result column="article_title" property="articleTitle"/>
+		<result column="article_category" property="articleCategory"/>
+		<result column="article_main" property="articleMain"/>
+		<result column="article_desc" property="articleDesc"/>
+		<result column="article_url" property="articleUrl"/>
+		<result column="author_code" property="authorCode"/>
+		<result column="create_time" property="createTime"/>
+		<result column="edit_time" property="editTime"/>
+		<result column="view_count" property="viewCount"/>
+		<result column="comment_count" property="commentCount"/>
+		<result column="status" property="status"/>
+
+	</resultMap>
+
+
     <insert id="addArticle" parameterType="article">
 		<selectKey resultType="int" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-        INSERT INTO `story`.`story_article` (`article_title`,`article_catagory`,`article_main`,`article_desc`,
+        INSERT INTO `story`.`story_article` (`article_title`,`article_category`,`article_main`,`article_desc`,
 	        `article_url`,`author_code`,`create_time`,`edit_time`,`view_count`,`comment_count`,`status`)
-        VALUES (#{articleTitle},#{articleCatagory},#{articleMain},#{articleDesc},#{articleUrl},#{authorCode},
+        VALUES (#{articleTitle},#{articleCategory},#{articleMain},#{articleDesc},#{articleUrl},#{authorCode},
 		    #{createTime},#{editTime},#{viewCount},#{commentCount},#{status});
     </insert>
+
+	<insert id="setArticleCategory" parameterType="article">
+		insert into story_article_category (category_id,article_id) values (#{id},#{articleCategory})
+	</insert>
+
+	<insert id="setArticleTag" parameterType="article">
+		insert into story_article_tag (tag_id,article_id) values
+		<if test="tagIds != null and tagIds.size() > 0">
+			<foreach collection="tagIds" separator="," item="tagId" >
+				(#{tagId},#{id})
+			</foreach>
+		</if>
+	</insert>
+
+	<select id="findPage" parameterType="string" resultMap="articleMap">
+		select * from story_article
+		<where>
+			<if test="value != null and value.length>0">
+				article_title like #{value} or author_code like #{value}
+			</if>
+		</where>
+	</select>
 </mapper>

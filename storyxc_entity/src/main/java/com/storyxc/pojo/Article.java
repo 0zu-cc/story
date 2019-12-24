@@ -3,7 +3,6 @@ package com.storyxc.pojo;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /****
@@ -15,13 +14,13 @@ import java.util.List;
 public class Article implements Serializable{
 	private Integer id;
 	private String articleTitle;
-	private String articleCatagory;
+	private String articleCategory;
 	private String articleMain;
 	private String articleDesc;
 	private String articleUrl;
 	private String authorCode;
-	private Date createTime;
-	private Date editTime;
+	private String createTime;
+	private String editTime;
 	private Integer viewCount;
 	private Integer commentCount;
 	private String status;

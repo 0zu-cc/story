@@ -40,6 +40,13 @@
             <version>1.2.51</version>
         </dependency>
 
+        <!--MarkDown 2 html -->
+        <dependency>
+            <groupId>com.youbenzi</groupId>
+            <artifactId>MDTool</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
         <!--鉴权-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

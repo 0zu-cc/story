@@ -1,6 +1,8 @@
 package com.storyxc.service;
 
+import com.github.pagehelper.PageInfo;
 import com.storyxc.pojo.Article;
+import com.storyxc.pojo.QueryPageBean;
 
 /**
  * @author Xc
@@ -9,4 +11,6 @@ import com.storyxc.pojo.Article;
  */
 public interface ArticleService {
     void addArticle(Article article);
+
+    PageInfo<Article> findPage(QueryPageBean queryPageBean);
 }

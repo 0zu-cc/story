@@ -2,6 +2,8 @@ package com.storyxc.mapper;
 
 import com.storyxc.pojo.Article;
 
+import java.util.List;
+
 /**
  * @author Xc
  * @description
@@ -9,4 +11,10 @@ import com.storyxc.pojo.Article;
  */
 public interface ArticleDao {
     void addArticle(Article article);
+
+    void setArticleCategory(Article article);
+
+    void setArticleTag(Article article);
+
+    List<Article> findPage(String queryString);
 }
