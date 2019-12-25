@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Xc
@@ -21,5 +22,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> queryAllCategories() {
         return categoryDao.queryAllCategories();
+    }
+
+    @Override
+    public List<Map<String, Integer>> queryCategoryArticle() {
+        return categoryDao.queryCategoryArticle();
     }
 }

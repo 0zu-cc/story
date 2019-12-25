@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Xc
@@ -59,5 +60,15 @@ public class ArticleServiceImpl implements ArticleService {
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
         List<Article> articleList =  articleDao.findPage(queryPageBean.getQueryString());
         return new PageInfo<Article>(articleList);
+    }
+
+    @Override
+    public Map<String, Integer> queryBlogStat() {
+        return articleDao.queryBlogStat();
+    }
+
+    @Override
+    public List<Article> queryHotArticle() {
+        return articleDao.queryHotArticle();
     }
 }

@@ -8,10 +8,10 @@ import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Xc
@@ -36,6 +36,18 @@ public class ArticleController {
     public Result addArticle(@RequestBody Article article){
         articleService.addArticle(article);
         return new Result(true, StatusCode.OK,"文章发布成功");
+    }
+
+    @GetMapping("/blogStat")
+    public Result queryBlogStat(){
+        Map<String,Integer> map = articleService.queryBlogStat();
+        return new Result(true,StatusCode.OK,"查询博客状态成功",map);
+    }
+
+    @GetMapping("/hot")
+    public Result queryHotArticle(){
+        List<Article> articleList = articleService.queryHotArticle();
+        return new Result(true,StatusCode.OK,"查询热门文章成功",articleList);
     }
 
 }

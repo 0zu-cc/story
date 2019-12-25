@@ -3,6 +3,7 @@ package com.storyxc.mapper;
 import com.storyxc.pojo.Article;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Xc
@@ -17,4 +18,8 @@ public interface ArticleDao {
     void setArticleTag(Article article);
 
     List<Article> findPage(String queryString);
+
+    Map<String, Integer> queryBlogStat();
+
+    List<Article> queryHotArticle();
 }

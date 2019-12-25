@@ -3,6 +3,7 @@ package com.storyxc.service;
 import com.storyxc.pojo.Category;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Xc
@@ -11,4 +12,6 @@ import java.util.List;
  */
 public interface CategoryService {
     List<Category> queryAllCategories();
+
+    List<Map<String, Integer>> queryCategoryArticle();
 }

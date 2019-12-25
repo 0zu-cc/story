@@ -11,4 +11,16 @@
     <select id="queryAllCategories" resultMap="categoryMap">
         select * from story_category
     </select>
+
+    <select id="queryCategoryArticle" resultType="map">
+		select
+			sc.category_name as categoryName,sc.category_id as categoryId,count(0) as count
+		from
+			story_category sc
+		LEFT JOIN
+			story_article_category sac
+		on
+			sc.category_id = sac.category_id
+		GROUP BY sc.category_name
+	</select>
 </mapper>

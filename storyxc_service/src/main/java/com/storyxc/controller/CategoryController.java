@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Xc
@@ -27,6 +28,12 @@ public class CategoryController {
     public Result queryAllCategories(){
         List<Category> categoryList = categoryService.queryAllCategories();
         return new Result(true, StatusCode.OK,"查询分类列表成功",categoryList);
+    }
+
+    @GetMapping("/article")
+    public Result queryCategoryArticle(){
+        List<Map<String, Integer>> mapList = categoryService.queryCategoryArticle();
+        return new Result(true,StatusCode.OK,"查询分类下文章数成功",mapList);
     }
 
 }

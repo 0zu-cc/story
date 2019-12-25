@@ -4,6 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.storyxc.pojo.Article;
 import com.storyxc.pojo.QueryPageBean;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Xc
  * @description
@@ -13,4 +16,8 @@ public interface ArticleService {
     void addArticle(Article article);
 
     PageInfo<Article> findPage(QueryPageBean queryPageBean);
+
+    Map<String, Integer> queryBlogStat();
+
+    List<Article> queryHotArticle();
 }
