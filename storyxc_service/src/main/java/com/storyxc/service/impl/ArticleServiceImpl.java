@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,6 @@ public class ArticleServiceImpl implements ArticleService {
         User user = (User) authentication.getPrincipal();
         String userCode = user.getUsername();
         article.setAuthorCode(userCode);
-        //TODO 集成模板引擎生成静态页
         article.setArticleUrl("test");
         article.setViewCount(0);
         article.setStatus("1");
@@ -44,12 +44,19 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCreateTime(DateUtil.parseDateToString(new Date()));
         //markdown->html->desc
         String str = StringFromHtmlUtil.getString(MDTool.markdown2Html(article.getArticleMain()));
-        //获取摘要  摘要长度为255个字符
-        String desc = str.length() > 240 ? str.substring(0, 240) + "......" : str;
+        //获取摘要
+        String desc = str.length() > 120 ? str.substring(0, 120) + "..." : str;
         article.setArticleDesc(desc);
         articleDao.addArticle(article);
+        String url = "http://www.storyxc.com/article/" + article.getId();
+        Map<String, String> map = new HashMap<>();
+        map.put("id", article.getId().toString());
+        map.put("url", url);
+        articleDao.setArticleUrl(map);
         articleDao.setArticleCategory(article);
-        articleDao.setArticleTag(article);
+        if (article.getTagIds() != null && article.getTagIds().size() > 0) {
+            articleDao.setArticleTag(article);
+        }
     }
 
     @Override
@@ -58,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
             queryPageBean.setQueryString("%" + queryPageBean.getQueryString() + "%");
         }
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
-        List<Article> articleList =  articleDao.findPage(queryPageBean.getQueryString());
+        List<Article> articleList = articleDao.findPage(queryPageBean.getQueryString());
         return new PageInfo<Article>(articleList);
     }
 
@@ -70,5 +77,15 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> queryHotArticle() {
         return articleDao.queryHotArticle();
+    }
+
+    @Override
+    public Article queryArticleById(String articleId) {
+        return articleDao.queryArticleById(articleId);
+    }
+
+    @Override
+    public void updateViewCount(String id) {
+        articleDao.updateViewCount(id);
     }
 }

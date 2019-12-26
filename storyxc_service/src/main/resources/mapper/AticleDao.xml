@@ -68,4 +68,20 @@
 		order by view_count desc
 		limit 0,5
 	</select>
+
+	<select id="queryArticleById" resultMap="articleMap" parameterType="String">
+		select * from story_article where article_id = #{articleId}
+	</select>
+
+	<update id="setArticleUrl" parameterType="map">
+		update story_article set article_url = #{url} where article_id = #{id}
+	</update>
+
+	<update id="updateViewCount" parameterType="String">
+		update story_article set view_count = view_count + 1 where article_id = #{id}
+	</update>
+
+	<update id="updateCommentCount" parameterType="String">
+		update story_article set comment_count = comment_count + 1 where article_id = #{id}
+	</update>
 </mapper>

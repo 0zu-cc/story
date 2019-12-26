@@ -20,4 +20,8 @@ public interface ArticleService {
     Map<String, Integer> queryBlogStat();
 
     List<Article> queryHotArticle();
+
+    Article queryArticleById(String articleId);
+
+    void updateViewCount(String id);
 }

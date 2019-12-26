@@ -25,6 +25,13 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @GetMapping("/{id}")
+    public Result loadArticle(@PathVariable String id){
+        articleService.updateViewCount(id);
+        return new Result(true,StatusCode.OK,"查询文章成功",articleService.queryArticleById(id));
+
+    }
+
     @PostMapping("/findPage")
     public Result findPage(@RequestBody QueryPageBean queryPageBean) {
         PageInfo<Article> result = articleService.findPage(queryPageBean);

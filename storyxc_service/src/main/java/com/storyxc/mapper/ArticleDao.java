@@ -22,4 +22,10 @@ public interface ArticleDao {
     Map<String, Integer> queryBlogStat();
 
     List<Article> queryHotArticle();
+
+    Article queryArticleById(String articleId);
+
+    void setArticleUrl(Map<String, String> map);
+
+    void updateViewCount(String id);
 }
