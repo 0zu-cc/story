@@ -13,7 +13,7 @@ import java.util.Map;
  * @createdTime 2019/12/18 15:38
  */
 public interface ArticleService {
-    void addArticle(Article article);
+    void addArticle(Article article,String type);
 
     PageInfo<Article> findPage(QueryPageBean queryPageBean);
 
@@ -24,4 +24,6 @@ public interface ArticleService {
     Article queryArticleById(String articleId);
 
     void updateViewCount(String id);
+
+    void updateArticle(Article article);
 }

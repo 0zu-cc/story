@@ -28,4 +28,10 @@ public interface ArticleDao {
     void setArticleUrl(Map<String, String> map);
 
     void updateViewCount(String id);
+
+    void updateArticle(Article article);
+
+    void updateArticleCategory(Article article);
+
+    void deleteArticleTag(Integer id);
 }

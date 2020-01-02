@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()// 该方法所返回的对象的方法来配置请求级别的安全细节
           // .antMatchers("/page/editor.html", "/page/management.html","/editor","/management").authenticated()//编辑器和管理后台需要拦截
-           .antMatchers("/editor","/management").hasRole("ADMIN")
+           .antMatchers("/editor","/management","/editor/**").hasRole("ADMIN")
            .antMatchers("/login").permitAll() // 登录页面不拦截
            .anyRequest().permitAll()
            .antMatchers(HttpMethod.POST, "/login").permitAll()// 对于登录路径不进行拦截

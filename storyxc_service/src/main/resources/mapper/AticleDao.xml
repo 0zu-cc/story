@@ -45,8 +45,9 @@
 	<select id="findPage" parameterType="string" resultMap="articleMap">
 		select * from story_article
 		<where>
+			status = '1'
 			<if test="value != null and value.length>0">
-				article_category like #{value}
+				and article_category like #{value}
 			</if>
 		</where>
 		order by create_time desc
@@ -69,10 +70,29 @@
 	</select>
 
 	<select id="queryArticleById" resultMap="articleMap" parameterType="String">
-		select * from story_article where article_id = #{articleId}
+		select * from story_article where article_id = #{articleId} and status = '1'
 	</select>
 
 	<update id="updateViewCount" parameterType="String">
 		update story_article set view_count = view_count + 1 where article_id = #{id}
 	</update>
+
+	<update id="updateArticle" parameterType="article">
+		update
+			story_article
+		set
+			article_title = #{articleTitle},
+			article_category = #{articleCategory},
+			article_main = #{articleMain},
+			article_desc = #{articleDesc},
+		    editTime = #{editTime}
+	</update>
+
+	<update id="updateArticleCategory" parameterType="article">
+		update story_article_category set category_id = #{articleCategory} where article_id = #{id}
+	</update>
+
+	<delete id="deleteArticleTag" parameterType="article">
+		delete from story_article_tag where article_id = #{id}
+	</delete>
 </mapper>

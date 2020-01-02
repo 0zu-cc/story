@@ -29,7 +29,6 @@ public class ArticleController {
     public Result loadArticle(@PathVariable String id){
         articleService.updateViewCount(id);
         return new Result(true,StatusCode.OK,"查询文章成功",articleService.queryArticleById(id));
-
     }
 
     @PostMapping("/findPage")
@@ -41,8 +40,20 @@ public class ArticleController {
     @PreAuthorize("hasAnyAuthority('ARTICLE_ADD')")
     @PostMapping
     public Result addArticle(@RequestBody Article article){
-        articleService.addArticle(article);
+        articleService.addArticle(article,"add");
         return new Result(true, StatusCode.OK,"文章发布成功");
+    }
+
+    @PostMapping("/save")
+    public Result saveArticle(@RequestBody Article article){
+        articleService.updateArticle(article);
+        return new Result(true,StatusCode.OK,"草稿保存成功");
+    }
+
+    @PreAuthorize("hasAnyAuthority('ARTICLE_EDIT')")
+    @GetMapping("/edit/{id}")
+    public Result editArticle(@PathVariable String id){
+        return new Result(true,StatusCode.OK,"查询文章成功",articleService.queryArticleById(id));
     }
 
     @GetMapping("/blogStat")

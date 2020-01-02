@@ -32,14 +32,17 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
 
     @Override
-    public void addArticle(Article article) {
+    public void addArticle(Article article, String type) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         String userCode = user.getUsername();
         article.setAuthorCode(userCode);
-        article.setArticleUrl("test");
         article.setViewCount(0);
-        article.setStatus("1");
+        if ("add".equals(type)) {
+            article.setStatus("1");
+        } else if ("save".equals(type)) {
+            article.setStatus("0");
+        }
         article.setCreateTime(DateUtil.parseDateToString(new Date()));
         //markdown->html->desc
         String str = StringFromHtmlUtil.getString(MDTool.markdown2Html(article.getArticleMain()));
@@ -86,5 +89,21 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void updateViewCount(String id) {
         articleDao.updateViewCount(id);
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        if (article.getId() != null) {
+            article.setEditTime(DateUtil.parseDateToString(new Date()));
+            articleDao.updateArticle(article);
+            articleDao.updateArticleCategory(article);
+            if (article.getTagIds()!=null && article.getTagIds().size()>0){
+            articleDao.deleteArticleTag(article.getId());
+            articleDao.setArticleTag(article);
+            }
+
+        } else {
+            addArticle(article, "save");
+        }
     }
 }
