@@ -22,7 +22,6 @@ public class Article implements Serializable{
 	private String createTime;
 	private String editTime;
 	private Integer viewCount;
-	private Integer commentCount;
 	private String status;
 	private List<Integer> tagIds;
 }

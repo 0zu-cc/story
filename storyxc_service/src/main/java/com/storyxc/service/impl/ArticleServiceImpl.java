@@ -40,7 +40,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArticleUrl("test");
         article.setViewCount(0);
         article.setStatus("1");
-        article.setCommentCount(0);
         article.setCreateTime(DateUtil.parseDateToString(new Date()));
         //markdown->html->desc
         String str = StringFromHtmlUtil.getString(MDTool.markdown2Html(article.getArticleMain()));
