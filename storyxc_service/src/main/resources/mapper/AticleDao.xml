@@ -33,6 +33,10 @@
 		insert into story_article_category (category_id,article_id) values (#{articleCategory},#{id})
 	</insert>
 
+	<update id="setArticleUrl" parameterType="map">
+		update story_article set article_url = #{url} where article_id = #{id}
+	</update>
+
 	<insert id="setArticleTag" parameterType="article">
 		insert into story_article_tag (tag_id,article_id) values
 		<if test="tagIds != null and tagIds.size() > 0">
@@ -85,7 +89,7 @@
 			article_category = #{articleCategory},
 			article_main = #{articleMain},
 			article_desc = #{articleDesc},
-		    editTime = #{editTime}
+		    edit_time = #{editTime} where article_id = #{id}
 	</update>
 
 	<update id="updateArticleCategory" parameterType="article">
@@ -95,4 +99,8 @@
 	<delete id="deleteArticleTag" parameterType="article">
 		delete from story_article_tag where article_id = #{id}
 	</delete>
+
+	<update id="updateArticleStatus" parameterType="article">
+		update story_artilce set status = '1' where article_id = #{id}
+	</update>
 </mapper>

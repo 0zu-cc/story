@@ -34,4 +34,6 @@ public interface ArticleDao {
     void updateArticleCategory(Article article);
 
     void deleteArticleTag(Integer id);
+
+    void updateArticleStatus(Article article);
 }

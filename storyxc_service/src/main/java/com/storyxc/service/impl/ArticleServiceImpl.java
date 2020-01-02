@@ -37,7 +37,7 @@ public class ArticleServiceImpl implements ArticleService {
         User user = (User) authentication.getPrincipal();
         String userCode = user.getUsername();
         article.setAuthorCode(userCode);
-        article.setViewCount(0);
+        article.setViewCount(article.getViewCount() == null ? 0 : article.getViewCount());
         if ("add".equals(type)) {
             article.setStatus("1");
         } else if ("save".equals(type)) {
@@ -49,15 +49,21 @@ public class ArticleServiceImpl implements ArticleService {
         //获取摘要
         String desc = str.length() > 120 ? str.substring(0, 120) + "..." : str;
         article.setArticleDesc(desc);
-        articleDao.addArticle(article);
-        String url = "http://www.storyxc.com/article/" + article.getId();
-        Map<String, String> map = new HashMap<>();
-        map.put("id", article.getId().toString());
-        map.put("url", url);
-        articleDao.setArticleUrl(map);
-        articleDao.setArticleCategory(article);
-        if (article.getTagIds() != null && article.getTagIds().size() > 0) {
-            articleDao.setArticleTag(article);
+        article.setArticleUrl("");
+        if (article.getId() != null) {
+            editArticle(article);
+            articleDao.updateArticleStatus(article);
+        } else {
+            articleDao.addArticle(article);
+            String url = "http://www.storyxc.com/article/" + article.getId();
+            Map<String, String> map = new HashMap<>();
+            map.put("id", article.getId().toString());
+            map.put("url", url);
+            articleDao.setArticleUrl(map);
+            articleDao.setArticleCategory(article);
+            if (article.getTagIds() != null && article.getTagIds().size() > 0) {
+                articleDao.setArticleTag(article);
+            }
         }
     }
 
@@ -94,16 +100,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void updateArticle(Article article) {
         if (article.getId() != null) {
-            article.setEditTime(DateUtil.parseDateToString(new Date()));
-            articleDao.updateArticle(article);
-            articleDao.updateArticleCategory(article);
-            if (article.getTagIds()!=null && article.getTagIds().size()>0){
-            articleDao.deleteArticleTag(article.getId());
-            articleDao.setArticleTag(article);
-            }
-
+            editArticle(article);
         } else {
             addArticle(article, "save");
+        }
+    }
+
+    private void editArticle(Article article) {
+        article.setEditTime(DateUtil.parseDateToString(new Date()));
+        articleDao.updateArticle(article);
+        articleDao.updateArticleCategory(article);
+        if (article.getTagIds() != null && article.getTagIds().size() > 0) {
+            articleDao.deleteArticleTag(article.getId());
+            articleDao.setArticleTag(article);
         }
     }
 }
