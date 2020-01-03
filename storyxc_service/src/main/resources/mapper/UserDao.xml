@@ -41,6 +41,15 @@
         where u.username=#{username}
     </select>
 
+    <select id="queryUserList" resultMap="userMap" parameterType="string">
+        select * from story_user
+        <if test="value != null and value.length>0">
+            <where>
+                username like #{value} or phone like #{value} or email like #{value}
+            </where>
+        </if>
+    </select>
+
     <insert id="addUser" parameterType="user">
         <selectKey resultType="int" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID()
@@ -51,6 +60,32 @@
 
     <insert id="setUserRole" parameterType="int">
         insert into story_role_user(user_id,role_id)
-        values (#{userId},#roleId)
+        values (#{userId},#{roleId})
     </insert>
+
+    <select id="queryUserById" parameterType="int" resultMap="userMap">
+        select id,username,email,sex,phone,created_time,last_login
+        from story_user where id = #{id}
+    </select>
+
+    <select id="getRoleIdsByUserId" parameterType="int" resultType="int">
+        select role_id from story_role_user where user_id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from story_user where id = #{id}
+    </delete>
+
+    <delete id="deleteUserRole" parameterType="int">
+        delete from story_role_user where user_id = #{id}
+    </delete>
+
+    <update id="editUser" parameterType="user">
+        update
+            story_user
+        set
+          username=#{username}, email=#{email}, sex=#{sex}, phone=#{phone}
+        where
+          id = #{id}
+    </update>
 </mapper>

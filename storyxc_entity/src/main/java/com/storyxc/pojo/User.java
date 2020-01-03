@@ -3,7 +3,6 @@ package com.storyxc.pojo;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /****
@@ -20,8 +19,8 @@ public class User implements Serializable {
     private String sex;
     private String phone;
     private String email;
-    private Date createdTime;
+    private String createdTime;
     private String headPic;
-    private Date lastLogin;
+    private String lastLogin;
     private List<Role> roles;
 }

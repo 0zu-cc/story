@@ -1,12 +1,12 @@
 package com.storyxc.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.storyxc.mapper.ArticleDao;
 import com.storyxc.pojo.Article;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.ArticleService;
 import com.storyxc.util.DateUtil;
+import com.storyxc.util.PageHelperUtil;
 import com.storyxc.utils.StringFromHtmlUtil;
 import com.youbenzi.mdtool.tool.MDTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +69,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public PageInfo<Article> findPage(QueryPageBean queryPageBean) {
-        if (queryPageBean.getQueryString() != null && !"".equals(queryPageBean.getQueryString())) {
-            queryPageBean.setQueryString("%" + queryPageBean.getQueryString() + "%");
-        }
-        PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
+        PageHelperUtil.startPage(queryPageBean);
         List<Article> articleList = articleDao.findPage(queryPageBean.getQueryString());
         return new PageInfo<Article>(articleList);
     }
