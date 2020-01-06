@@ -28,4 +28,6 @@ public interface UserDao {
     void deleteUserRole(Integer id);
 
     void editUser(User user);
+
+    User findUserByUsername(String username);
 }

@@ -88,4 +88,8 @@
         where
           id = #{id}
     </update>
+
+    <select id="findUserByUsername" parameterType="string" resultType="user">
+        select username,created_time,email,phone from story_user where username = #{username}
+    </select>
 </mapper>

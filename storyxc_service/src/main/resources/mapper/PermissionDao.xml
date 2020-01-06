@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.storyxc.mapper.PermissionDao">
+
+    <select id="findPage" parameterType="string" resultType="permission">
+        select * from story_permission
+        <if test="value != null and value.length>0">
+            <where>
+                name like #{value} or keyword like #{value} or description like #{value}
+            </where>
+        </if>
+    </select>
+
+    <insert id="addPermission" parameterType="permission">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO story_permission ( `name`, `keyword`, `description`) VALUES
+        ( #{name}, #{keyword}, #{description});
+    </insert>
+
+    <delete id="deletePermission" parameterType="int">
+        delete from story_permission where id = #{id}
+    </delete>
+
+    <delete id="deleteRolePermission" parameterType="int">
+        delete from story_role_permission where permission_id = #{id}
+    </delete>
+
+    <select id="getPermissionById" parameterType="int" resultType="permission">
+        select * from story_permission where id = #{id}
+    </select>
+
+    <update id="editPermission" parameterType="permission">
+        update story_permission set name = #{name} , keyword = #{keyword},description = #{description}
+        where id = #{id}
+    </update>
+</mapper>

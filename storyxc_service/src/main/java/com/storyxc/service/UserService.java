@@ -25,4 +25,6 @@ public interface UserService {
     void delete(Integer id);
 
     void editUser(User user, Integer[] roleIds);
+
+    User findUserByUsername(String username);
 }
