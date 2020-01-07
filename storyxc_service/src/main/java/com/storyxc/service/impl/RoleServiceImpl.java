@@ -1,10 +1,14 @@
 package com.storyxc.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.storyxc.mapper.RoleDao;
+import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.pojo.Role;
 import com.storyxc.service.RoleService;
+import com.storyxc.util.PageHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,4 +29,37 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> queryAllRoles() {
         return roleDao.queryAllRoles();
     }
+
+    @Override
+    public PageInfo<Role> findPage(QueryPageBean queryPageBean) {
+        PageHelperUtil.startPage(queryPageBean);
+        List<Role> roleList = roleDao.findPage(queryPageBean.getQueryString());
+        return new PageInfo<>(roleList);
+    }
+
+    @Override
+    @Transactional
+    public void addRole(Role role) {
+        roleDao.addRole(role);
+        if (role.getMenuNums() != null && role.getMenuNums().size() > 0) {
+            roleDao.setRoleMenus(role);
+        }
+        if (role.getPermissionNums() != null && role.getPermissionNums().size() > 0) {
+            roleDao.setRolePermissions(role);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteRole(Integer id) {
+        roleDao.deleteRole(id);
+        roleDao.deleteRolePermission(id);
+        roleDao.deleteRoleMenu(id);
+    }
+
+    @Override
+    public Role getRoleById(Integer id) {
+        return roleDao.getRoleById(id);
+    }
+
 }

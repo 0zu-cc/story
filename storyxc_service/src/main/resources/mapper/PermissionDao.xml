@@ -36,4 +36,8 @@
         update story_permission set name = #{name} , keyword = #{keyword},description = #{description}
         where id = #{id}
     </update>
+
+    <select id="getAllPermissions" resultType="permission">
+        select * from story_permission
+    </select>
 </mapper>

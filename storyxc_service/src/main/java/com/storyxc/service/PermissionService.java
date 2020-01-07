@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.storyxc.pojo.Permission;
 import com.storyxc.pojo.QueryPageBean;
 
+import java.util.List;
+
 /**
  * @author Xc
  * @description
@@ -21,4 +23,6 @@ public interface PermissionService {
     Permission getPermissionById(Integer id);
 
     void editPermission(Permission permission);
+
+    List<Permission> getAllPermissions();
 }

@@ -10,6 +10,7 @@ import com.storyxc.util.PageHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -62,12 +63,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         userDao.delete(id);
         userDao.deleteUserRole(id);
     }
 
     @Override
+    @Transactional
     public void editUser(User user, Integer[] roleIds) {
         userDao.editUser(user);
         userDao.deleteUserRole(user.getId());

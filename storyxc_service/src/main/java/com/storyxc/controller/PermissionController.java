@@ -7,7 +7,10 @@ import com.storyxc.pojo.Permission;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Xc
@@ -20,6 +23,12 @@ public class PermissionController {
 
     @Autowired
     private PermissionService permissionService;
+
+    @GetMapping("/all")
+    public Result<List<Permission>> getAllPermissions(){
+        List<Permission> permissionList = permissionService.getAllPermissions();
+        return new Result(true,StatusCode.OK,"查询所有权限成功",permissionList);
+    }
 
     @PostMapping("/findPage")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
@@ -34,6 +43,7 @@ public class PermissionController {
     }
 
     @DeleteMapping
+    @Transactional
     public Result deletePermission(Integer id){
         permissionService.deletePermission(id);
         permissionService.deleteRolePermission(id);

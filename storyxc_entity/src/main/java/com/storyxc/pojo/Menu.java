@@ -1,6 +1,7 @@
 package com.storyxc.pojo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Set;
  * @createdTime 2019/12/19 13:42
  */
 @Data
+@EqualsAndHashCode
 public class Menu implements Serializable {
     private Integer id;
     private String name;
@@ -25,4 +27,5 @@ public class Menu implements Serializable {
     private Set<Role> roles = new HashSet<Role>(0);
     private List<Menu> children = new ArrayList<>();
     private Integer parentMenuId;
+    private Integer level;
 }

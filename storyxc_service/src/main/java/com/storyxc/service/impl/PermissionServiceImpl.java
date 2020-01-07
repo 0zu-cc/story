@@ -53,4 +53,9 @@ public class PermissionServiceImpl implements PermissionService {
     public void editPermission(Permission permission) {
         permissionDao.editPermission(permission);
     }
+
+    @Override
+    public List<Permission> getAllPermissions() {
+        return permissionDao.getAllPermissions();
+    }
 }

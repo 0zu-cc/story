@@ -1,7 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.storyxc.mapper.MenuDao">
+
+	<select id="findPage" resultType="menu" parameterType="string">
+		select * from story_menu
+		<if test="value !=null and value.length>0 ">
+			<where>
+				`name` like #{value} or description like #{value}
+			</where>
+		</if>
+	</select>
+
+	<insert id="addMenu" parameterType="menu">
+		<selectKey order="AFTER" keyProperty="id" resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO
+		`story_menu`
+		(`name`, `linkUrl`, `path`, `priority`, `icon`, `description`, `parentMenuId`, `level`)
+		VALUES
+		(#{name}, #{linkUrl}, #{path}, #{priority}, #{icon}, #{description}, #{parentMenuId}, #{level});
+	</insert>
+
+	<select id="getMenuById" parameterType="int" resultType="menu">
+		select * from story_menu where id = #{id}
+	</select>
+
+	<update id="editMenu" parameterType="menu">
+		update
+			story_menu
+		set
+			name=#{name},linkUrl=#{linkUrl},path=#{path},priority=#{priority},description=#{description},
+			icon=#{icon},parentMenuId=#{parentMenuId},level=#{level}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteMenu" parameterType="int">
+		delete from story_menu where id = #{id}
+	</delete>
+
+	<select id="getAllMenus" resultType="menu">
+		select * from story_menu
+	</select>
+
+	<delete id="deleteMenuAndRole" parameterType="int">
+		delete from story_role_menu where menu_id = #{id}
+	</delete>
+
+	<select id="queryAllMenusByUsername" parameterType="string" resultMap="menuMap">
+		select sm.*
+ 		from story_user sus
+		left join story_role_user sru on sru.user_id = sus.id
+		left join story_role sr on sr.id = sru.role_id
+		left join story_role_menu srm on srm.role_id = sr.id
+		left join story_menu sm on sm.id = srm.menu_id
+		where sus.username = #{username}
+	</select>
+
+
+	<resultMap id="menuMap" type="menu">
+		<id property="id" column="id"/>
+		<result property="path" column="path"/>
+		<result property="name" column="name"/>
+		<result property="linkUrl" column="linkUrl"/>
+		<result property="icon" column="icon"/>
+		<result property="description" column="description"/>
+		<result property="parentMenuId" column="parentMenuId"/>
+		<result property="level" column="level"/>
+	</resultMap>
 
 
 </mapper>

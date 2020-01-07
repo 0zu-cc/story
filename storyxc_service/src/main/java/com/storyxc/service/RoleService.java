@@ -1,5 +1,7 @@
 package com.storyxc.service;
 
+import com.github.pagehelper.PageInfo;
+import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.pojo.Role;
 
 import java.util.List;
@@ -11,4 +13,12 @@ import java.util.List;
  */
 public interface RoleService {
     List<Role> queryAllRoles();
+
+    PageInfo<Role> findPage(QueryPageBean queryPageBean);
+
+    void addRole(Role role);
+
+    void deleteRole(Integer id);
+
+    Role getRoleById(Integer id);
 }

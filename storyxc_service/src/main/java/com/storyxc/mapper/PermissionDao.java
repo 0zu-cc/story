@@ -21,4 +21,6 @@ public interface PermissionDao {
     Permission getPermissionById(Integer id);
 
     void editPermission(Permission permission);
+
+    List<Permission> getAllPermissions();
 }

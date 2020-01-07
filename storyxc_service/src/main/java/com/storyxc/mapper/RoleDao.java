@@ -11,4 +11,20 @@ import java.util.List;
  */
 public interface RoleDao {
     List<Role> queryAllRoles();
+
+    List<Role> findPage(String queryString);
+
+    void addRole(Role role);
+
+    void setRoleMenus(Role role);
+
+    void setRolePermissions(Role role);
+
+    void deleteRole(Integer id);
+
+    void deleteRolePermission(Integer id);
+
+    void deleteRoleMenu(Integer id);
+
+    Role getRoleById(Integer id);
 }
