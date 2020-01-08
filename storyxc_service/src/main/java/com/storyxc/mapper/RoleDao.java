@@ -27,4 +27,6 @@ public interface RoleDao {
     void deleteRoleMenu(Integer id);
 
     Role getRoleById(Integer id);
+
+    void editRole(Role role);
 }

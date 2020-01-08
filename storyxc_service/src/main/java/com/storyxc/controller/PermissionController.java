@@ -25,7 +25,7 @@ public class PermissionController {
     private PermissionService permissionService;
 
     @GetMapping("/all")
-    public Result<List<Permission>> getAllPermissions(){
+    public Result getAllPermissions(){
         List<Permission> permissionList = permissionService.getAllPermissions();
         return new Result(true,StatusCode.OK,"查询所有权限成功",permissionList);
     }

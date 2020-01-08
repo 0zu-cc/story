@@ -21,4 +21,6 @@ public interface RoleService {
     void deleteRole(Integer id);
 
     Role getRoleById(Integer id);
+
+    void editRole(Role role);
 }

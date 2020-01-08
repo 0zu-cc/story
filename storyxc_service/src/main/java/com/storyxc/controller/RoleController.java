@@ -54,4 +54,10 @@ public class RoleController {
         return new Result(true,StatusCode.OK,"查询角色成功",role);
     }
 
+    @PutMapping
+    public Result editRole(@RequestBody Role role){
+        roleService.editRole(role);
+        return new Result(true,StatusCode.OK,"更新角色成功");
+    }
+
 }

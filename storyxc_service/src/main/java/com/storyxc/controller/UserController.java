@@ -60,6 +60,7 @@ public class UserController {
     @PostMapping("/getRoleIdsByUserId")
     public Result getRoleIdsByUserId(Integer id){
         List<Integer> roleIds = userService.getRoleIdsByUserId(id);
+
         return new Result(true,StatusCode.OK,"查询用户角色成功",roleIds);
     }
 
@@ -70,6 +71,7 @@ public class UserController {
         return new Result(true,StatusCode.OK,"删除用户成功");
     }
 
+    @PreAuthorize("hasAnyAuthority('USER_EDIT')")
     @PutMapping
     public Result edit(@RequestBody User user,Integer[] roleIds){
         userService.editUser(user,roleIds);

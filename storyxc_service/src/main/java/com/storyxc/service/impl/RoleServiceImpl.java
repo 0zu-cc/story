@@ -62,4 +62,14 @@ public class RoleServiceImpl implements RoleService {
         return roleDao.getRoleById(id);
     }
 
+    @Override
+    @Transactional
+    public void editRole(Role role) {
+        roleDao.editRole(role);
+        roleDao.deleteRoleMenu(role.getId());
+        roleDao.deleteRolePermission(role.getId());
+        roleDao.setRoleMenus(role);
+        roleDao.setRolePermissions(role);
+    }
+
 }

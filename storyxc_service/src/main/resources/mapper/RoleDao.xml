@@ -1,66 +1,101 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.storyxc.mapper.RoleDao">
 
-    <resultMap id="roleMap" type="com.storyxc.pojo.Role">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="keyword" column="keyword"/>
-        <result property="description" column="description"/>
-    </resultMap>
+	<resultMap id="roleMap" type="com.storyxc.pojo.Role">
+		<id property="id" column="r_id"/>
+		<result property="name" column="r_name"/>
+		<result property="keyword" column="r_keyword"/>
+		<result property="description" column="r_description"/>
+		<!--Permission集合-->
+		<collection property="permissions" ofType="Permission">
+			<id property="id" column="p_id"/>
+			<result property="name" column="p_name"/>
+			<result property="keyword" column="p_keyword"/>
+			<result property="description" column="p_description"/>
+		</collection>
 
-    <select id="queryAllRoles" resultMap="roleMap">
+		<!--Menu集合-->
+		<collection property="menus" ofType="Menu">
+			<id property="id" column="m_id"/>
+			<result property="name" column="m_name"/>
+			<result property="linkUrl" column="m_linkUrl"/>
+			<result property="path" column="m_path"/>
+			<result property="parentMenuId" column="m_parentMenuId"/>
+			<result property="priority" column="m_priority"/>
+			<result property="icon" column="m_icon"/>
+			<result property="description" column="m_description"/>
+		</collection>
+	</resultMap>
+
+	<select id="queryAllRoles" resultType="role">
         select * from story_role
     </select>
 
-    <select id="findPage" parameterType="string" resultType="role">
-        select * from story_role
-        <if test="value != null and value.length > 0">
-            <where>
-                `name` like #{value} or keyword like #{value} or description like #{value}
-            </where>
-        </if>
-    </select>
+	<select id="findPage" parameterType="string" resultType="role">
+		select * from story_role
+		<if test="value != null and value.length > 0">
+			<where>
+				`name` like #{value} or keyword like #{value} or description like #{value}
+			</where>
+		</if>
+	</select>
 
-    <insert id="addRole" parameterType="role">
-        <selectKey resultType="int" keyProperty="id" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-        INSERT INTO `story`.`story_role` (`name`, `keyword`, `description`)
-        VALUES
-        (#{name}, #{keyword},#{description});
-    </insert>
+	<insert id="addRole" parameterType="role">
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO `story`.`story_role` (`name`, `keyword`, `description`)
+		VALUES
+		(#{name}, #{keyword},#{description});
+	</insert>
 
-    <insert id="setRoleMenus" parameterType="role">
-        insert into story_role_menu (role_id,menu_id)
-        values
-        <foreach collection="menuNums" item="menuId" separator="," >
-            (#{id},#{menuId})
-        </foreach>
-    </insert>
+	<insert id="setRoleMenus" parameterType="role">
+		insert into story_role_menu (role_id,menu_id)
+		values
+		<foreach collection="menuNums" item="menuId" separator=",">
+			(#{id},#{menuId})
+		</foreach>
+	</insert>
 
-    <insert id="setRolePermissions" parameterType="role">
-        insert into story_role_permission (role_id,permission_id)
-        values
-        <foreach collection="permissionNums" item="permissionId" separator=",">
-            (#{id},#{permissionId})
-        </foreach>
-    </insert>
+	<insert id="setRolePermissions" parameterType="role">
+		insert into story_role_permission (role_id,permission_id)
+		values
+		<foreach collection="permissionNums" item="permissionId" separator=",">
+			(#{id},#{permissionId})
+		</foreach>
+	</insert>
 
-    <delete id="deleteRole" parameterType="int">
+	<delete id="deleteRole" parameterType="int">
         delete from story_role where id = #{id}
     </delete>
 
-    <delete id="deleteRolePermission" parameterType="int">
+	<delete id="deleteRolePermission" parameterType="int">
         delete from story_role_permission where role_id = #{id}
     </delete>
 
-    <delete id="deleteRoleMenu" parameterType="int">
+	<delete id="deleteRoleMenu" parameterType="int">
         delete from story_role_menu where role_id = #{id}
     </delete>
 
-    <select id="getRoleById" parameterType="int" resultType="roleMap">
-
+	<select id="getRoleById" parameterType="int" resultMap="roleMap">
+        SELECT r.id as r_id, r.name as r_name,r.keyword as r_keyword,r.description as r_description,
+            p.id as p_id,p.name as p_name,p.keyword as p_keyword,p.description as p_description,
+            m.id as m_id,m.name as m_name,m.linkUrl as m_linkUrl,m.path as m_path,m.priority as m_priority,
+            m.icon as m_icon,m.description as m_description,m.parentMenuid as m_parentMenuId,m.level as m_level
+            from story_role as r
+            LEFT JOIN story_role_permission as r_p on r.id = r_p.role_id
+            LEFT JOIN story_permission as p on p.id = r_p.permission_id
+            LEFT JOIN story_role_menu as r_m on r.id = r_m.role_id
+            LEFT JOIN story_menu as m on r_m.menu_id = m.id
+            WHERE r.id = #{id}
     </select>
+
+	<update id="editRole" parameterType="role">
+        UPDATE `story`.`story_role`
+        SET `name`=#{name}, `keyword`=#{keyword}, `description`=#{description}
+        WHERE `id`= #{id};
+    </update>
+
 </mapper>
