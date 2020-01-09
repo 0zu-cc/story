@@ -10,16 +10,16 @@ import com.storyxc.util.PageHelperUtil;
 import com.storyxc.utils.StringFromHtmlUtil;
 import com.youbenzi.mdtool.tool.MDTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Xc
@@ -31,6 +31,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleDao articleDao;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional
@@ -66,6 +69,19 @@ public class ArticleServiceImpl implements ArticleService {
             if (article.getTagIds() != null && article.getTagIds().size() > 0) {
                 articleDao.setArticleTag(article);
             }
+            String articleMain = article.getArticleMain();
+            String regex = "http://io\\.storyxc.com/storyxc/\\w+(\\.png|\\.jpg|\\.jpeg|\\.gif)";
+            Set<String> picSet = new HashSet<>();
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(articleMain);
+            Map picMap = new HashMap<Integer,String>();
+            int i = 1;
+            while (matcher.find()) {
+                picMap.put(i,matcher.group());
+                i++;
+            }
+            redisTemplate.boundHashOps("articlePic_"+article.getId()).putAll(picMap);
+
         }
     }
 
@@ -104,6 +120,31 @@ public class ArticleServiceImpl implements ArticleService {
             addArticle(article, "save");
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteArticle(Integer id) {
+        articleDao.deleteArticle(id);
+        articleDao.deleteArticleTag(id);
+        articleDao.deleteArticleCategory(id);
+        redisTemplate.delete("articlePic_"+id);
+    }
+
+    @Override
+    public Article getArticleById(Integer id) {
+        return articleDao.getArticleById(id);
+    }
+
+    @Override
+    public void editArticleInfo(Article article) {
+        articleDao.editArticleInfo(article);
+    }
+
+    @Override
+    public PageInfo<Article> findPageManage(QueryPageBean queryPageBean) {
+        PageHelperUtil.startPage(queryPageBean);
+        List<Article> articleList = articleDao.findPageManage(queryPageBean.getQueryString());
+        return new PageInfo<Article>(articleList);    }
 
     private void editArticle(Article article) {
         article.setEditTime(DateUtil.parseDateToString(new Date()));

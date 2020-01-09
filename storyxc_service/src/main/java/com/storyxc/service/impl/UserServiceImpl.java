@@ -8,6 +8,7 @@ import com.storyxc.service.UserService;
 import com.storyxc.util.DateUtil;
 import com.storyxc.util.PageHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Autowired(required = false)
     private UserDao userDao;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public void addUser(User user, Integer[] roleIds) {
@@ -33,10 +36,15 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setCreatedTime(DateUtil.parseDateToString(new Date()));
         userDao.addUser(user);
+        if (user.getHeadPic() != null && !"".equals(user.getHeadPic())) {
+            redisTemplate.boundSetOps("userHeadPic").add(user.getHeadPic());
+        }
         if (roleIds != null && roleIds.length > 0) {
             for (Integer roleId : roleIds) {
                 userDao.setUserRole(user.getId(), roleId);
             }
+        } else {
+            userDao.setUserCommon(user.getId());
         }
     }
 

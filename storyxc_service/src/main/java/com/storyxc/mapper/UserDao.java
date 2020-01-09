@@ -30,4 +30,6 @@ public interface UserDao {
     void editUser(User user);
 
     User findUserByUsername(String username);
+
+    void setUserCommon(Integer id);
 }

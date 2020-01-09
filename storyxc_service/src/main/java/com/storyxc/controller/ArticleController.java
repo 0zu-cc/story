@@ -37,6 +37,12 @@ public class ArticleController {
         return new Result(true,StatusCode.OK, "查询文章列表成功", result);
     }
 
+    @PostMapping("/findPage/manage")
+    public Result findPageManage(@RequestBody QueryPageBean queryPageBean) {
+        PageInfo<Article> result = articleService.findPageManage(queryPageBean);
+        return new Result(true,StatusCode.OK, "查询文章列表成功", result);
+    }
+
     @PreAuthorize("hasAnyAuthority('ARTICLE_ADD')")
     @PostMapping
     public Result addArticle(@RequestBody Article article){
@@ -66,6 +72,23 @@ public class ArticleController {
     public Result queryHotArticle(){
         List<Article> articleList = articleService.queryHotArticle();
         return new Result(true,StatusCode.OK,"查询热门文章成功",articleList);
+    }
+
+    @DeleteMapping
+    public Result deleteArticle(Integer id){
+        articleService.deleteArticle(id);
+        return new Result(true,StatusCode.OK,"删除文章成功");
+    }
+
+    @GetMapping
+    public Result getArticleById(Integer id){
+        return new Result(true,StatusCode.OK,"查询文章成功",articleService.getArticleById(id));
+    }
+
+    @PutMapping
+    public Result editArticle(@RequestBody Article article){
+        articleService.editArticleInfo(article);
+        return new Result(true,StatusCode.OK,"修改文章成功");
     }
 
 }

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -64,7 +65,7 @@ public class QiNiuUtil {
                     System.out.print(key + "\t");
                     if (status.code == 200) {
                         removeSuccessList.add(key);
-                        logger.info("delete success");
+                        logger.info("删除图片成功,图片名:[{}]", Arrays.toString(filenames));
                     } else {
                         logger.info("delete failure");
                     }

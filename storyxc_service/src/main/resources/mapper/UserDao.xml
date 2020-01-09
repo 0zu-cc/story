@@ -92,4 +92,8 @@
     <select id="findUserByUsername" parameterType="string" resultType="user">
         select username,created_time,email,phone from story_user where username = #{username}
     </select>
+
+    <insert id="setUserCommon" parameterType="int">
+        insert into story_role_user (user_id,role_id) values(#{id},2)
+    </insert>
 </mapper>

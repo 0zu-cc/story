@@ -26,4 +26,12 @@ public interface ArticleService {
     void updateViewCount(String id);
 
     void updateArticle(Article article);
+
+    void deleteArticle(Integer id);
+
+    Article getArticleById(Integer id);
+
+    void editArticleInfo(Article article);
+
+    PageInfo<Article> findPageManage(QueryPageBean queryPageBean);
 }

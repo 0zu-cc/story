@@ -36,4 +36,14 @@ public interface ArticleDao {
     void deleteArticleTag(Integer id);
 
     void updateArticleStatus(Article article);
+
+    void deleteArticle(Integer id);
+
+    void deleteArticleCategory(Integer id);
+
+    Article getArticleById(Integer id);
+
+    void editArticleInfo(Article article);
+
+    List<Article> findPageManage(String queryString);
 }

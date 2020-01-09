@@ -18,6 +18,21 @@
 
 	</resultMap>
 
+	<resultMap id="articleMap1" type="com.storyxc.pojo.Article">
+		<id column="article_id" property="id"/>
+		<result column="article_title" property="articleTitle"/>
+		<result column="cn" property="articleCategory"/>
+		<result column="article_main" property="articleMain"/>
+		<result column="article_desc" property="articleDesc"/>
+		<result column="article_url" property="articleUrl"/>
+		<result column="author_code" property="authorCode"/>
+		<result column="create_time" property="createTime"/>
+		<result column="edit_time" property="editTime"/>
+		<result column="view_count" property="viewCount"/>
+		<result column="status" property="status"/>
+
+	</resultMap>
+
 
     <insert id="addArticle" parameterType="article">
 		<selectKey resultType="int" order="AFTER" keyProperty="id">
@@ -55,6 +70,16 @@
 			</if>
 		</where>
 		order by create_time desc
+	</select>
+
+	<select id="findPageManage" parameterType="string" resultMap="articleMap1">
+		select a.*,c.category_name cn from story_article a
+		left join story_category c on a.article_category = c.category_id
+		<where>
+			<if test="value != null and value.length>0">
+				author_code like #{value} or article_title like #{value}
+			</if>
+		</where>
 	</select>
 
 	<select id="queryBlogStat" resultType="map">
@@ -102,5 +127,21 @@
 
 	<update id="updateArticleStatus" parameterType="article">
 		update story_artilce set status = '1' where article_id = #{id}
+	</update>
+
+	<delete id="deleteArticle" parameterType="int">
+		delete from story_article where article_id =#{id}
+	</delete>
+
+	<delete id="deleteArticleCategory" parameterType="int">
+		delete from story_article_category where article_id = #{id}
+	</delete>
+
+	<select id="getArticleById" parameterType="int" resultMap="articleMap">
+		select * from story_article where article_id = #{id}
+	</select>
+
+	<update id="editArticleInfo" parameterType="article">
+		update story_article set article_title = #{articleTitle},status = #{status} where article_id = #{id}
 	</update>
 </mapper>
