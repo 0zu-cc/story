@@ -38,6 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 添加文章
+     *
      * @param article
      * @param type
      */
@@ -84,11 +85,13 @@ public class ArticleServiceImpl implements ArticleService {
             while (matcher.find()) {
                 picSet.add(matcher.group());
             }
-            Set<String> imgFileNameSet = new HashSet<>();
-            //处理set中元素 去掉http://io.storyxc.com/
-            picSet.forEach(item->imgFileNameSet.add(item.substring(22)));
-            //存入redis
-            redisTemplate.boundHashOps("article_pic").put(article.getId().toString(), JSON.toJSONString(imgFileNameSet));
+            if (picSet.size() > 0) {
+                //处理set中元素 去掉http://io.storyxc.com/
+                Set<String> imgFileNameSet = new HashSet<>();
+                picSet.forEach(item -> imgFileNameSet.add(item.substring(22)));
+                //存入redis
+                redisTemplate.boundHashOps("article_pic").put(article.getId().toString(), JSON.toJSONString(imgFileNameSet));
+            }
         }
     }
 
@@ -152,7 +155,8 @@ public class ArticleServiceImpl implements ArticleService {
     public PageInfo<Article> findPageManage(QueryPageBean queryPageBean) {
         PageHelperUtils.startPage(queryPageBean);
         List<Article> articleList = articleDao.findPageManage(queryPageBean.getQueryString());
-        return new PageInfo<Article>(articleList);    }
+        return new PageInfo<Article>(articleList);
+    }
 
     private void editArticle(Article article) {
         article.setEditTime(DateUtils.parseDateToString(new Date()));
