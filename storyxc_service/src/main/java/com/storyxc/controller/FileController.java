@@ -2,9 +2,8 @@ package com.storyxc.controller;
 
 import com.storyxc.entity.Result;
 import com.storyxc.entity.StatusCode;
-import com.storyxc.service.FileService;
+import com.storyxc.service.upload.UploadStrategyContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
 
     @Autowired
-    private RedisTemplate redisTemplate;
-
-    @Autowired
-    private FileService fileService;
+    private UploadStrategyContext uploadStrategyContext;
 
     @PostMapping
-    public Result uploadFile(@RequestBody MultipartFile file) {
-        String imgPath = fileService.uploadFile(file);
+    public Result uploadFile(@RequestBody MultipartFile file,String type) {
+        String imgPath = uploadStrategyContext.uploadFile(file,type);
         return new Result(true, StatusCode.OK, "上传文件成功", imgPath);
     }
 }

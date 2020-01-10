@@ -8,7 +8,7 @@ import com.storyxc.pojo.QueryPageBean;
  * @description
  * @createdTime 2020/1/3 15:43
  */
-public class PageHelperUtil {
+public class PageHelperUtils {
 
     public static void startPage(QueryPageBean queryPageBean){
         if (queryPageBean.getQueryString() != null && !"".equals(queryPageBean.getQueryString())) {

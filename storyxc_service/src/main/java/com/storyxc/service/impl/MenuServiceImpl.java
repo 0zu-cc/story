@@ -5,7 +5,7 @@ import com.storyxc.mapper.MenuDao;
 import com.storyxc.pojo.Menu;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.MenuService;
-import com.storyxc.util.PageHelperUtil;
+import com.storyxc.util.PageHelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,7 +102,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public PageInfo<Menu> findPage(QueryPageBean queryPageBean) {
-        PageHelperUtil.startPage(queryPageBean);
+        PageHelperUtils.startPage(queryPageBean);
         List<Menu> menuList = menuDao.findPage(queryPageBean.getQueryString());
         return new PageInfo<>(menuList);
     }

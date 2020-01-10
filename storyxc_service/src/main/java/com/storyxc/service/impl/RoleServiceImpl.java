@@ -5,7 +5,7 @@ import com.storyxc.mapper.RoleDao;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.pojo.Role;
 import com.storyxc.service.RoleService;
-import com.storyxc.util.PageHelperUtil;
+import com.storyxc.util.PageHelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public PageInfo<Role> findPage(QueryPageBean queryPageBean) {
-        PageHelperUtil.startPage(queryPageBean);
+        PageHelperUtils.startPage(queryPageBean);
         List<Role> roleList = roleDao.findPage(queryPageBean.getQueryString());
         return new PageInfo<>(roleList);
     }

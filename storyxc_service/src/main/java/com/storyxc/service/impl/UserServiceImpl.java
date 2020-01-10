@@ -5,8 +5,8 @@ import com.storyxc.mapper.UserDao;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.pojo.User;
 import com.storyxc.service.UserService;
-import com.storyxc.util.DateUtil;
-import com.storyxc.util.PageHelperUtil;
+import com.storyxc.util.DateUtils;
+import com.storyxc.util.PageHelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public void addUser(User user, Integer[] roleIds) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setCreatedTime(DateUtil.parseDateToString(new Date()));
+        user.setCreatedTime(DateUtils.parseDateToString(new Date()));
         userDao.addUser(user);
         if (user.getHeadPic() != null && !"".equals(user.getHeadPic())) {
             redisTemplate.boundSetOps("userHeadPic").add(user.getHeadPic());
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageInfo<User> queryUserList(QueryPageBean queryPageBean) {
-        PageHelperUtil.startPage(queryPageBean);
+        PageHelperUtils.startPage(queryPageBean);
         List<User> userList = userDao.queryUserList(queryPageBean.getQueryString());
         return new PageInfo<User>(userList);
     }

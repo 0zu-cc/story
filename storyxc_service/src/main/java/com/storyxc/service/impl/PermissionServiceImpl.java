@@ -5,7 +5,7 @@ import com.storyxc.mapper.PermissionDao;
 import com.storyxc.pojo.Permission;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.PermissionService;
-import com.storyxc.util.PageHelperUtil;
+import com.storyxc.util.PageHelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public PageInfo<Permission> findPage(QueryPageBean queryPageBean) {
-        PageHelperUtil.startPage(queryPageBean);
+        PageHelperUtils.startPage(queryPageBean);
         List<Permission> permissionList = permissionDao.findPage(queryPageBean.getQueryString());
         return new PageInfo<Permission>(permissionList);
     }

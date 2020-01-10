@@ -8,7 +8,7 @@ import java.util.*;
  * @description
  * @createdTime 2019/12/24 18:45
  */
-public class DateUtil {
+public class DateUtils {
 
 
     public static String parseDateToString(Date date) {

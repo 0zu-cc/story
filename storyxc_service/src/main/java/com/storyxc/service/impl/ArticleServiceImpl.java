@@ -1,12 +1,13 @@
 package com.storyxc.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.storyxc.mapper.ArticleDao;
 import com.storyxc.pojo.Article;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.ArticleService;
-import com.storyxc.util.DateUtil;
-import com.storyxc.util.PageHelperUtil;
+import com.storyxc.util.DateUtils;
+import com.storyxc.util.PageHelperUtils;
 import com.storyxc.utils.StringFromHtmlUtil;
 import com.youbenzi.mdtool.tool.MDTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    /**
+     * 添加文章
+     * @param article
+     * @param type
+     */
     @Override
     @Transactional
     public void addArticle(Article article, String type) {
@@ -48,7 +54,7 @@ public class ArticleServiceImpl implements ArticleService {
         } else if ("save".equals(type)) {
             article.setStatus("0");
         }
-        article.setCreateTime(DateUtil.parseDateToString(new Date()));
+        article.setCreateTime(DateUtils.parseDateToString(new Date()));
         //markdown->html->desc
         String str = StringFromHtmlUtil.getString(MDTool.markdown2Html(article.getArticleMain()));
         //获取摘要
@@ -70,24 +76,25 @@ public class ArticleServiceImpl implements ArticleService {
                 articleDao.setArticleTag(article);
             }
             String articleMain = article.getArticleMain();
+            //正则表达式匹配文章中的图片路径
             String regex = "http://io\\.storyxc.com/storyxc/\\w+(\\.png|\\.jpg|\\.jpeg|\\.gif)";
             Set<String> picSet = new HashSet<>();
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(articleMain);
-            Map picMap = new HashMap<Integer,String>();
-            int i = 1;
             while (matcher.find()) {
-                picMap.put(i,matcher.group());
-                i++;
+                picSet.add(matcher.group());
             }
-            redisTemplate.boundHashOps("articlePic_"+article.getId()).putAll(picMap);
-
+            Set<String> imgFileNameSet = new HashSet<>();
+            //处理set中元素 去掉http://io.storyxc.com/
+            picSet.forEach(item->imgFileNameSet.add(item.substring(22)));
+            //存入redis
+            redisTemplate.boundHashOps("article_pic").put(article.getId().toString(), JSON.toJSONString(imgFileNameSet));
         }
     }
 
     @Override
     public PageInfo<Article> findPage(QueryPageBean queryPageBean) {
-        PageHelperUtil.startPage(queryPageBean);
+        PageHelperUtils.startPage(queryPageBean);
         List<Article> articleList = articleDao.findPage(queryPageBean.getQueryString());
         return new PageInfo<Article>(articleList);
     }
@@ -127,7 +134,8 @@ public class ArticleServiceImpl implements ArticleService {
         articleDao.deleteArticle(id);
         articleDao.deleteArticleTag(id);
         articleDao.deleteArticleCategory(id);
-        redisTemplate.delete("articlePic_"+id);
+        //删除redis缓存的文章图片信息
+        redisTemplate.boundHashOps("article_pic").delete(id.toString());
     }
 
     @Override
@@ -142,12 +150,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public PageInfo<Article> findPageManage(QueryPageBean queryPageBean) {
-        PageHelperUtil.startPage(queryPageBean);
+        PageHelperUtils.startPage(queryPageBean);
         List<Article> articleList = articleDao.findPageManage(queryPageBean.getQueryString());
         return new PageInfo<Article>(articleList);    }
 
     private void editArticle(Article article) {
-        article.setEditTime(DateUtil.parseDateToString(new Date()));
+        article.setEditTime(DateUtils.parseDateToString(new Date()));
         articleDao.updateArticle(article);
         articleDao.updateArticleCategory(article);
         if (article.getTagIds() != null && article.getTagIds().size() > 0) {

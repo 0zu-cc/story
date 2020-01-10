@@ -15,15 +15,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Component
-public class QiNiuUtil {
+public class QiNiuUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(QiNiuUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(QiNiuUtils.class);
 
     @Value("${qiniu.AccessKey}")
     private String accessKey;
@@ -65,7 +66,7 @@ public class QiNiuUtil {
                     System.out.print(key + "\t");
                     if (status.code == 200) {
                         removeSuccessList.add(key);
-                        logger.info("删除图片成功,图片名:[{}]", Arrays.toString(filenames));
+                        logger.info("删除图片成功,图片名:[{}]", key);
                     } else {
                         logger.info("delete failure");
                     }
@@ -134,5 +135,24 @@ public class QiNiuUtil {
         Auth auth = Auth.create(accessKey, secretKey);
         // 创建操作某个仓库的管理器
         return new BucketManager(auth, new Configuration(Zone.zone2()));
+    }
+
+    public String uploadFile(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        String extName = originalFileName.substring(originalFileName.lastIndexOf("."));
+        String fileName;
+        if (originalFileName.length() < 25) {
+            String imgName = UUID.randomUUID().toString().replaceAll("-", "");
+            fileName = "storyxc/" + imgName + extName;
+        }else{
+            fileName = originalFileName;
+        }
+        try {
+            uploadViaByte(file.getBytes(), fileName);
+
+        } catch (Exception e) {
+            logger.warn("warn---------->>>>>>>>>>>>>>>:", e);
+        }
+        return fileName;
     }
 }
