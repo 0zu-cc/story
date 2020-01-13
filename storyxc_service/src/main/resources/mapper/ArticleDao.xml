@@ -64,7 +64,7 @@
 	<select id="findPage" parameterType="string" resultMap="articleMap">
 		select * from story_article
 		<where>
-			status = '1'
+			status = 1
 			<if test="value != null and value.length>0">
 				and article_category like #{value}
 			</if>
@@ -83,10 +83,18 @@
 	</select>
 
 	<select id="queryBlogStat" resultType="map">
-		select
+		SELECT
 			count(0) articleCount
-		from
-			story_article sa
+		FROM
+			(
+				SELECT
+					article_id,
+					STATUS
+				FROM
+					story_article
+				WHERE
+					STATUS = 1
+			) sa
 	</select>
 
 	<select id="queryHotArticle" resultMap="articleMap">
@@ -94,6 +102,7 @@
 			*
 		from
 			story_article
+		where status = 1
 		order by view_count desc
 		limit 0,5
 	</select>

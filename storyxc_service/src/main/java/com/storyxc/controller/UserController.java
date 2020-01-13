@@ -1,5 +1,6 @@
 package com.storyxc.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.storyxc.entity.Result;
 import com.storyxc.entity.StatusCode;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -27,55 +29,66 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/loginStatus")
-    public Result loginStatus(){
+    public Result loginStatus() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        if ("anonymousUser".equals(username)){
-            return new Result(false,StatusCode.OK,"用户未登录");
+        if ("anonymousUser".equals(username)) {
+            return new Result(false, StatusCode.OK, "用户未登录");
         }
-        return new Result(true,StatusCode.OK,"查询登录状态成功",username);
+        return new Result(true, StatusCode.OK, "查询登录状态成功", username);
     }
 
 
     @PostMapping
     public Result addUser(@RequestBody User user, Integer[] roleIds) {
-        userService.addUser(user,roleIds);
-        return new Result(true, StatusCode.OK,"新建用户成功");
+        userService.addUser(user, roleIds);
+        return new Result(true, StatusCode.OK, "新建用户成功");
     }
 
     @PreAuthorize("hasAnyAuthority('USER_QUERY')")
     @PostMapping("/findPage")
-    public Result findPage(@RequestBody QueryPageBean queryPageBean){
+    public Result findPage(@RequestBody QueryPageBean queryPageBean) {
         PageInfo<User> result = userService.queryUserList(queryPageBean);
-        return new Result(true,StatusCode.OK,"查询用户列表成功",result);
+        return new Result(true, StatusCode.OK, "查询用户列表成功", result);
     }
 
     @PreAuthorize("hasAnyAuthority('USER_QUERY')")
     @GetMapping
-    public Result queryUserById(Integer id){
+    public Result queryUserById(Integer id) {
         User user = userService.queryUserById(id);
-        return new Result(true,StatusCode.OK,"查询用户信息成功",user);
+        return new Result(true, StatusCode.OK, "查询用户信息成功", user);
     }
 
     @PostMapping("/getRoleIdsByUserId")
-    public Result getRoleIdsByUserId(Integer id){
+    public Result getRoleIdsByUserId(Integer id) {
         List<Integer> roleIds = userService.getRoleIdsByUserId(id);
 
-        return new Result(true,StatusCode.OK,"查询用户角色成功",roleIds);
+        return new Result(true, StatusCode.OK, "查询用户角色成功", roleIds);
     }
 
     @PreAuthorize("hasAnyAuthority('USER_DELETE')")
     @DeleteMapping
-    public Result deleteUser(Integer id){
+    public Result deleteUser(Integer id) {
         userService.delete(id);
-        return new Result(true,StatusCode.OK,"删除用户成功");
+        return new Result(true, StatusCode.OK, "删除用户成功");
     }
 
     @PreAuthorize("hasAnyAuthority('USER_EDIT')")
     @PutMapping
-    public Result edit(@RequestBody User user,Integer[] roleIds){
-        userService.editUser(user,roleIds);
-        return new Result(true,StatusCode.OK,"编辑用户信息成功");
+    public Result edit(@RequestBody User user, Integer[] roleIds) {
+        userService.editUser(user, roleIds);
+        return new Result(true, StatusCode.OK, "编辑用户信息成功");
+    }
+
+    @PutMapping("/changePwd")
+    public Result changePwd(@RequestBody JSONObject jsonObject, HttpSession session) {
+        boolean flag = userService.changePwd(jsonObject);
+        if (flag) {
+            session.invalidate();
+            return new Result(true, StatusCode.OK, "修改密码成功");
+        } else {
+            return new Result(true, StatusCode.ERROR, "旧密码错误");
+        }
     }
 
 }

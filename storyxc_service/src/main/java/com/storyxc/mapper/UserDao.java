@@ -32,4 +32,8 @@ public interface UserDao {
     User findUserByUsername(String username);
 
     void setUserCommon(Integer id);
+
+    String queryEncodedPwd(String userCode);
+
+    void changePwd(@Param("username") String username,@Param("password") String password);
 }

@@ -1,5 +1,6 @@
 package com.storyxc.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.storyxc.mapper.UserDao;
 import com.storyxc.pojo.QueryPageBean;
@@ -9,6 +10,8 @@ import com.storyxc.util.DateUtils;
 import com.storyxc.util.PageHelperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,5 +96,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         return userDao.findUserByUsername(username);
+    }
+
+    @Transactional
+    @Override
+    public boolean changePwd(JSONObject jsonObject) {
+        String pastPassword = (String) jsonObject.get("pastPassword");
+        String newPassword = (String) jsonObject.get("newPassword");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+        String userCode = user.getUsername();
+        String encodedPwd = userDao.queryEncodedPwd(userCode);
+        //输入的旧密码匹配
+        if (encoder.matches(pastPassword,encodedPwd)){
+            userDao.changePwd(userCode,encoder.encode(newPassword));
+            return true;
+        }else {
+            return false;
+        }
     }
 }

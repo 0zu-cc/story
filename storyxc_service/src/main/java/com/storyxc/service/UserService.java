@@ -1,5 +1,6 @@
 package com.storyxc.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.pojo.User;
@@ -27,4 +28,6 @@ public interface UserService {
     void editUser(User user, Integer[] roleIds);
 
     User findUserByUsername(String username);
+
+    boolean changePwd(JSONObject jsonObject);
 }

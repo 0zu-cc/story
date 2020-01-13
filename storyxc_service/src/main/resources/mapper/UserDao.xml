@@ -96,4 +96,12 @@
     <insert id="setUserCommon" parameterType="int">
         insert into story_role_user (user_id,role_id) values(#{id},2)
     </insert>
+
+    <select id="queryEncodedPwd" parameterType="string" resultType="string">
+        select password from story_user where username = #{userCode}
+    </select>
+
+    <update id="changePwd" parameterType="string">
+        update story_user set password = #{password} where username = #{username}
+    </update>
 </mapper>
