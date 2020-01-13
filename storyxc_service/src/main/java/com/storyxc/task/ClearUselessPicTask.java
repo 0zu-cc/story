@@ -1,4 +1,4 @@
-package com.storyxc.tasks;
+package com.storyxc.task;
 
 import com.alibaba.fastjson.JSON;
 import com.storyxc.util.QiNiuUtils;
@@ -30,6 +30,16 @@ public class ClearUselessPicTask {
 
     @Autowired
     private QiNiuUtils qiNiuUtils;
+
+
+    /**
+     * 获取每日Bing壁纸
+     * 执行时间: 每天凌晨1点
+     */
+    @Scheduled(cron = "10/10 * * * * *")
+    public void getBingWallPaper(){
+
+    }
 
     /**
      * 清理无用的文章图片
