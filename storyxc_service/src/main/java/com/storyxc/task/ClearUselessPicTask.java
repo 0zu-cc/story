@@ -33,15 +33,6 @@ public class ClearUselessPicTask {
 
 
     /**
-     * 获取每日Bing壁纸
-     * 执行时间: 每天凌晨1点
-     */
-    @Scheduled(cron = "10/10 * * * * *")
-    public void getBingWallPaper(){
-
-    }
-
-    /**
      * 清理无用的文章图片
      * 执行时间: 每周日的凌晨2点
      */

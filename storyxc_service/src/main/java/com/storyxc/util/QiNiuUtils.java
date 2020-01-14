@@ -103,7 +103,7 @@ public class QiNiuUtils {
             Response response = uploadManager.put(bytes, savedFilename, upToken);
             //解析上传成功的结果
             DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
-            logger.info("上传图片成功,文件名:[{}]",putRet.key);
+            logger.info("上传图片成功,文件名:[{}]", putRet.key);
         } catch (QiniuException ex) {
             Response r = ex.response;
             try {
@@ -144,7 +144,7 @@ public class QiNiuUtils {
         if (originalFileName.length() < 25) {
             String imgName = UUID.randomUUID().toString().replaceAll("-", "");
             fileName = "storyxc/" + imgName + extName;
-        }else{
+        } else {
             fileName = originalFileName;
         }
         try {
