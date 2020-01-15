@@ -1,6 +1,8 @@
 package com.storyxc.service;
 
+import com.github.pagehelper.PageInfo;
 import com.storyxc.pojo.Image;
+import com.storyxc.pojo.QueryPageBean;
 
 /**
  * @author Xc
@@ -9,4 +11,8 @@ import com.storyxc.pojo.Image;
  */
 public interface ImageService {
     void saveImage(Image image);
+
+    PageInfo<Image> findPage(QueryPageBean queryPageBean);
+
+    Image getImageByName(String fullName);
 }

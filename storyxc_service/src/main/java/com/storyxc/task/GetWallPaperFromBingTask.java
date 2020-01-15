@@ -10,9 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,12 +43,13 @@ public class GetWallPaperFromBingTask {
 
     private final String BING_PREFIX = "http://cn.bing.com";
 
-    private final String DIR_PATH = "/story/";
+    private final String DIR_PATH = "/images/";
     /**
      * 获取每日Bing壁纸
-     * 执行时间: 每天凌晨1点
+     * 执行时间: 为避免网络异常 每天0点0-5分每分钟尝试一次同步
      */
-    @Scheduled(cron = "0 0 1 ? * *")
+    @Transactional
+    @Scheduled(cron = "0 1,2,3,4,5 0 ? * *")
     public void getBingWallPaper() {
         logger.info("开始执行同步壁纸任务");
         HttpClient httpClient = new HttpClient(PIC_INTERFACE);
@@ -62,8 +65,9 @@ public class GetWallPaperFromBingTask {
             logger.info("下载文件成功,文件名[{}],文件路径[{}]",fileName, DIR_PATH+fileName);
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (DuplicateKeyException d){
+            logger.warn("数据库已存在当前数据");
         }
-
     }
 
     Image getImageFromResponse(String response) {

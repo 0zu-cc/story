@@ -14,8 +14,15 @@ public class Image {
     private Integer id;
     private String startdate;
     private String fullstartdate;
+    private String date;
     private String enddate;
     private String url;
+    private String fullName;
+    private String fullUrl;
+    private String viewFileUrl;
+    private Integer viewCount;
+    private Integer likeCount;
+    private Integer downloadCount;
     private String copyright;
     private String copyrightlink;
     private String title;

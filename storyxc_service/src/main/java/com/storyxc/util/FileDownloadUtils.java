@@ -41,11 +41,16 @@ public class FileDownloadUtils {
             if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
                 HttpEntity entity = response.getEntity();
                 InputStream inputStream = entity.getContent();
+                //将输入流转换为字节数组
+                byte[] byteArray = inputStreamToByteArray(inputStream);
+                assert byteArray != null;
+                InputStream reuseInputStream = new ByteArrayInputStream(byteArray);
                 //如果是同步的壁纸 上传到七牛云
                 if ("wallPaper".equals(type)) {
-                    qiNiuUtils.uploadViaByte(inputStreamToByteArray(inputStream),"/story/"+fileName);
+                    String tempFileName = "images/"+fileName;
+                    qiNiuUtils.uploadViaByte(byteArray,tempFileName);
                 }
-                saveFileToDisk(inputStream, dirPath, fileName);
+                saveFileToDisk(reuseInputStream, dirPath, fileName);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,6 +103,11 @@ public class FileDownloadUtils {
         }
     }
 
+    /**
+     * 输入流转换字节数组
+     * @param inputStream
+     * @return
+     */
     public static byte[] inputStreamToByteArray(InputStream inputStream) {
         ByteArrayOutputStream outputStream = null;
         try {
