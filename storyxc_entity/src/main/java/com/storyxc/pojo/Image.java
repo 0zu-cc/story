@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 public class Image {
-    private Integer id;
     private String startdate;
     private String fullstartdate;
     private String date;

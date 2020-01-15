@@ -24,8 +24,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void saveImage(Image image) {
-        String startdate = image.getStartdate();
-        String date = startdate.substring(0,4)+"-"+(startdate.substring(4,6))+"-"+(startdate.substring(6,8));
+        String imageDate = image.getEnddate();
+        String date = imageDate.substring(0,4)+"-"+(imageDate.substring(4,6))+"-"+(imageDate.substring(6,8));
         image.setDate(date);
         String fullName = image.getUrl().substring("/th?id=OHR.".length(),image.getUrl().indexOf(".jpg")+4);
         image.setFullName(fullName);

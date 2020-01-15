@@ -12,7 +12,7 @@
 	</insert>
 
 	<select id="findPage" parameterType="string" resultType="image">
-		select id,fullName,fullUrl,viewFileUrl,viewCount,likeCount,downloadCount,`date`,copyright from story_image
+		select fullName,fullUrl,viewFileUrl,viewCount,likeCount,downloadCount,`date`,copyright from story_image
 		<if test="value != null and value.length > 0">
 			<where>
 				fullName like #{value}
