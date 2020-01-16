@@ -6,18 +6,19 @@
 	<insert id="saveImage" parameterType="image">
 		insert into
 			story_image
-		(startdate,fullstartdate,fullName,`date`,viewFileUrl,enddate,url,fullUrl,copyright,copyrightlink,title,quiz,wp,hsh)
+		(startdate,fullstartdate,fullName,`date`,enddate,url,fullUrl,copyright,copyrightlink,title,quiz,wp,hsh)
 		values
-		(#{startdate},#{fullstartdate},#{fullName},#{date},#{viewFileUrl},#{enddate},#{url},#{fullUrl},#{copyright},#{copyrightlink},#{title},#{quiz},#{wp},#{hsh})
+		(#{startdate},#{fullstartdate},#{fullName},#{date},#{enddate},#{url},#{fullUrl},#{copyright},#{copyrightlink},#{title},#{quiz},#{wp},#{hsh})
 	</insert>
 
 	<select id="findPage" parameterType="string" resultType="image">
-		select fullName,fullUrl,viewFileUrl,viewCount,likeCount,downloadCount,`date`,copyright from story_image
+		select fullName,fullUrl,viewCount,likeCount,downloadCount,`date`,copyright from story_image
 		<if test="value != null and value.length > 0">
 			<where>
 				fullName like #{value}
 			</where>
 		</if>
+		order by `date` desc
 	</select>
 
 	<select id="getImageByName" parameterType="string" resultType="image">

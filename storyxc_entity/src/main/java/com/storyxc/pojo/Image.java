@@ -18,7 +18,6 @@ public class Image {
     private String url;
     private String fullName;
     private String fullUrl;
-    private String viewFileUrl;
     private Integer viewCount;
     private Integer likeCount;
     private Integer downloadCount;

@@ -29,7 +29,6 @@ public class ImageServiceImpl implements ImageService {
         image.setDate(date);
         String fullName = image.getUrl().substring("/th?id=OHR.".length(),image.getUrl().indexOf(".jpg")+4);
         image.setFullName(fullName);
-        image.setViewFileUrl("https://www.storyxc.com/image/"+fullName);
         image.setFullUrl("http://io.storyxc.com/images/"+fullName);
         imageDao.saveImage(image);
     }
