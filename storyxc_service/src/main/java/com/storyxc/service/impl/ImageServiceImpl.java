@@ -44,4 +44,25 @@ public class ImageServiceImpl implements ImageService {
     public Image getImageByName(String fullName) {
         return imageDao.getImageByName(fullName);
     }
+
+    @Override
+    public Image getImageByDate(String flag) {
+        return imageDao.getImageByDate(flag);
+    }
+
+    @Override
+    public void updateDownloadCount(String flag) {
+        imageDao.updateDownloadCount(flag);
+    }
+
+    @Override
+    public Integer updateLikeCount(String date) {
+        imageDao.updateLikeCount(date);
+        return imageDao.getLikeCountByDate(date);
+    }
+
+    @Override
+    public Integer getDownloadCount(String flag) {
+        return imageDao.getDownloadCount(flag);
+    }
 }

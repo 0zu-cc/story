@@ -15,4 +15,12 @@ public interface ImageService {
     PageInfo<Image> findPage(QueryPageBean queryPageBean);
 
     Image getImageByName(String fullName);
+
+    Image getImageByDate(String flag);
+
+    void updateDownloadCount(String flag);
+
+    Integer updateLikeCount(String date);
+
+    Integer getDownloadCount(String flag);
 }

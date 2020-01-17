@@ -6,20 +6,8 @@ import com.storyxc.entity.StatusCode;
 import com.storyxc.pojo.Image;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.ImageService;
-import com.storyxc.util.FileDownloadUtils;
-import com.storyxc.util.QiNiuUtils;
-import org.apache.commons.io.IOUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.filechooser.FileSystemView;
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * @author Xc
@@ -29,8 +17,6 @@ import java.net.URLConnection;
 @RestController
 @RequestMapping("/story/image")
 public class ImageController {
-    @Autowired
-    private QiNiuUtils qiNiuUtils;
 
     @Autowired
     private ImageService imageService;
@@ -46,6 +32,12 @@ public class ImageController {
     public Result getImageByName(String fullName){
         Image image = imageService.getImageByName(fullName);
         return new Result(true,StatusCode.OK,"查询壁纸成功",image);
+    }
+
+    @GetMapping("/like")
+    public Result likeImage(String date){
+        Integer count = imageService.updateLikeCount(date);
+        return new Result(true,StatusCode.OK,"点赞成功",count);
     }
 
 }

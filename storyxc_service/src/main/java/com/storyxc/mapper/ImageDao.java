@@ -15,4 +15,14 @@ public interface ImageDao {
     List<Image> findPage(String queryString);
 
     Image getImageByName(String fullName);
+
+    Image getImageByDate(String flag);
+
+    void updateDownloadCount(String flag);
+
+    void updateLikeCount(String date);
+
+    Integer getLikeCountByDate(String date);
+
+    Integer getDownloadCount(String flag);
 }
