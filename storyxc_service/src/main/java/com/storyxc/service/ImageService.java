@@ -4,6 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.storyxc.pojo.Image;
 import com.storyxc.pojo.QueryPageBean;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author Xc
  * @description
@@ -20,7 +23,7 @@ public interface ImageService {
 
     void updateDownloadCount(String flag);
 
-    Integer updateLikeCount(String date);
+    Integer updateLikeCount(String date, HttpServletRequest request, HttpServletResponse response);
 
     Integer getDownloadCount(String flag);
 }

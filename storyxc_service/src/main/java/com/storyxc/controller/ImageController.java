@@ -9,6 +9,9 @@ import com.storyxc.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author Xc
  * @description
@@ -35,8 +38,11 @@ public class ImageController {
     }
 
     @GetMapping("/like")
-    public Result likeImage(String date){
-        Integer count = imageService.updateLikeCount(date);
+    public Result likeImage(String date, HttpServletRequest request, HttpServletResponse response){
+        Integer count = imageService.updateLikeCount(date,request,response);
+        if(count == null){
+            return new Result(false,"不能重复点赞");
+        }
         return new Result(true,StatusCode.OK,"点赞成功",count);
     }
 
