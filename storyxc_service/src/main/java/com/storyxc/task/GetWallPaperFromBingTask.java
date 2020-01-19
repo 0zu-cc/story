@@ -2,10 +2,12 @@ package com.storyxc.task;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.storyxc.entity.HttpClient;
 import com.storyxc.pojo.Image;
 import com.storyxc.service.ImageService;
 import com.storyxc.util.FileDownloadUtils;
+import com.storyxc.util.HttpClientUtils;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,7 @@ public class GetWallPaperFromBingTask {
     private final String BING_PREFIX = "http://cn.bing.com";
 
     private final String DIR_PATH = "/images/";
+
     /**
      * 获取每日Bing壁纸
      * 执行时间: 为避免网络异常 每天0点0-5分每分钟尝试一次同步
@@ -52,25 +55,30 @@ public class GetWallPaperFromBingTask {
     @Scheduled(cron = "0 1,2,3,4,5 0 ? * *")
     public void getBingWallPaper() {
         logger.info("开始执行同步壁纸任务");
-        HttpClient httpClient = new HttpClient(PIC_INTERFACE);
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
-            httpClient.get();
-            String response = httpClient.getContent();
+            String response = HttpClientUtils.getResponseStr(httpClient, PIC_INTERFACE);
             Image image = getImageFromResponse(response);
             //图片信息入库存储
             imageService.saveImage(image);
-            String fileName = image.getUrl().substring("/th?id=OHR.".length(),image.getUrl().indexOf(".jpg")+4);
+            String fileName = image.getUrl().substring("/th?id=OHR.".length(), image.getUrl().indexOf(".jpg") + 4);
             //壁纸文件下载到本地
-            fileDownloadUtils.download(BING_PREFIX+image.getUrl(),DIR_PATH, fileName, "wallPaper");
-            logger.info("下载文件成功,文件名[{}],文件路径[{}]",fileName, DIR_PATH+fileName);
+            fileDownloadUtils.download(BING_PREFIX + image.getUrl(), DIR_PATH, fileName, "wallPaper");
+            logger.info("下载文件成功,文件名[{}],文件路径[{}]", fileName, DIR_PATH + fileName);
         } catch (IOException e) {
             e.printStackTrace();
-        }catch (DuplicateKeyException d){
+        } catch (DuplicateKeyException d) {
             logger.warn("数据库已存在当前数据");
+        } finally {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    Image getImageFromResponse(String response) {
+    private Image getImageFromResponse(String response) {
         Image image = null;
         try {
             JSONObject jsonObject = JSON.parseObject(response);

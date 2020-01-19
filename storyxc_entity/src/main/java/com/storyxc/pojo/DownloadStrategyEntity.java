@@ -1,4 +1,4 @@
-package com.storyxc.entity;
+package com.storyxc.pojo;
 
 import lombok.Data;
 

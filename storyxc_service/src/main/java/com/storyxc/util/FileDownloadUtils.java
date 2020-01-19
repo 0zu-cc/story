@@ -1,9 +1,5 @@
 package com.storyxc.util;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
@@ -28,33 +24,23 @@ public class FileDownloadUtils {
      * @param fileName 文件路径
      */
     public void download(String url, String dirPath, String fileName, String type) {
-
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
-        HttpGet httpGet = new HttpGet(url);
-
-        httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36");
-        httpGet.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-
         try {
-            HttpResponse response = httpClient.execute(httpGet);
-            if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
-                HttpEntity entity = response.getEntity();
-                InputStream inputStream = entity.getContent();
-                //将输入流转换为字节数组
-                byte[] byteArray = inputStreamToByteArray(inputStream);
-                assert byteArray != null;
-                InputStream reuseInputStream = new ByteArrayInputStream(byteArray);
-                //如果是同步的壁纸 上传到七牛云
-                if ("wallPaper".equals(type)) {
-                    String tempFileName = "images/"+fileName;
-                    qiNiuUtils.uploadViaByte(byteArray,tempFileName);
-                }
-                saveFileToDisk(reuseInputStream, dirPath, fileName);
+            InputStream inputStream = HttpClientUtils.getResponseInputStream(httpClient,url);
+            //将输入流转换为字节数组
+            byte[] byteArray = inputStreamToByteArray(inputStream);
+            assert byteArray != null;
+            InputStream reuseInputStream = new ByteArrayInputStream(byteArray);
+            //如果是同步的壁纸 上传到七牛云
+            if ("wallPaper".equals(type)) {
+                String tempFileName = "images/" + fileName;
+                qiNiuUtils.uploadViaByte(byteArray, tempFileName);
             }
-        } catch (Exception e) {
+            saveFileToDisk(reuseInputStream, dirPath, fileName);
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
+        }finally {
             try {
                 httpClient.close();
             } catch (IOException e) {
@@ -105,6 +91,7 @@ public class FileDownloadUtils {
 
     /**
      * 输入流转换字节数组
+     *
      * @param inputStream
      * @return
      */

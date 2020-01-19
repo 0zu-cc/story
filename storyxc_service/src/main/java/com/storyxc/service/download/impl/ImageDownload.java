@@ -3,12 +3,9 @@ package com.storyxc.service.download.impl;
 import com.storyxc.pojo.Image;
 import com.storyxc.service.ImageService;
 import com.storyxc.service.download.DownloadStrategy;
+import com.storyxc.util.HttpClientUtils;
 import com.storyxc.util.QiNiuUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +47,7 @@ public class ImageDownload implements DownloadStrategy {
         String url = "http://" + qiNiuUtils.domain + "/" + fileName;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
-
-            HttpGet httpGet = new HttpGet(url);
-
-            httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36");
-            httpGet.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            if (HttpStatus.SC_OK == httpResponse.getStatusLine().getStatusCode()) {
-                HttpEntity entity = httpResponse.getEntity();
-                inputStream = entity.getContent();
-            }
+            inputStream = HttpClientUtils.getResponseInputStream(httpClient,url);
             outputStream = response.getOutputStream();
             response.setContentType("image/jpeg");
             response.setHeader("content-Disposition", "attachment;filename=" + image.getFullName());

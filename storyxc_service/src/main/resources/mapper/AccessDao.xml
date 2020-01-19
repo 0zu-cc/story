@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.storyxc.mapper.AccessDao">
+
+	<insert id="addVisitorInfo" parameterType="string">
+		insert into
+			story_anonymous_access (`ip`,`location`,`login_time`)
+		values
+			(#{remoteAddr},#{visitorLocation},#{loginTime})
+	</insert>
+
+	<select id="findByIp" parameterType="string">
+		select count(1) from story_anonymous_access where ip = #{remoteAddr}
+	</select>
+
+	<update id="updateVisitorInfo" parameterType="string">
+		update
+			story_anonymous_access
+		set
+			`location` = #{visitorLocation},`login_time` = #{loginTime}
+		where
+			`ip` = #{remoteAddr}
+	</update>
+
+	<update id="updateVisitCount">
+		update story_visit_count set count = count + 1
+	</update>
+
+	<insert id="addVisitorStatistics" parameterType="string">
+		insert into
+			story_anonymous_access (`ip`,`location`,`login_time`)
+		values
+			(#{remoteAddr},#{visitorLocation},#{loginTime})
+	</insert>
+</mapper>

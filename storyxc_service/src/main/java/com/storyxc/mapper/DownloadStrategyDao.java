@@ -1,6 +1,6 @@
 package com.storyxc.mapper;
 
-import com.storyxc.entity.DownloadStrategyEntity;
+import com.storyxc.pojo.DownloadStrategyEntity;
 import org.apache.ibatis.annotations.Select;
 
 /**

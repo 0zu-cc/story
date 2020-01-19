@@ -1,6 +1,6 @@
 package com.storyxc.service.download;
 
-import com.storyxc.entity.DownloadStrategyEntity;
+import com.storyxc.pojo.DownloadStrategyEntity;
 import com.storyxc.mapper.DownloadStrategyDao;
 import com.storyxc.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
