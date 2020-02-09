@@ -44,4 +44,8 @@
 	<select id="getLikeCountByDate" parameterType="string" resultType="int">
 		select likeCount from story_image where `date` = #{date}
 	</select>
+
+	<select id="getTodayPic" resultType="image">
+		select * from story_image order by date desc limit 0,1
+	</select>
 </mapper>

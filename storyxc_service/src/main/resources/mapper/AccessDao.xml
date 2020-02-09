@@ -5,12 +5,12 @@
 
 	<insert id="addVisitorInfo" parameterType="string">
 		insert into
-			story_anonymous_access (`ip`,`location`,`login_time`)
+			story_anonymous_access (`ip`,`location`,`access_time`)
 		values
 			(#{remoteAddr},#{visitorLocation},#{loginTime})
 	</insert>
 
-	<select id="findByIp" parameterType="string">
+	<select id="findByIp" parameterType="string" resultType="int">
 		select count(1) from story_anonymous_access where ip = #{remoteAddr}
 	</select>
 
@@ -18,7 +18,7 @@
 		update
 			story_anonymous_access
 		set
-			`location` = #{visitorLocation},`login_time` = #{loginTime}
+			`location` = #{visitorLocation},`access_time` = #{loginTime}
 		where
 			`ip` = #{remoteAddr}
 	</update>
@@ -29,8 +29,16 @@
 
 	<insert id="addVisitorStatistics" parameterType="string">
 		insert into
-			story_anonymous_access (`ip`,`location`,`login_time`)
+			story_anonymous_access_statistics (`ip`,`location`,`access_time`)
 		values
 			(#{remoteAddr},#{visitorLocation},#{loginTime})
 	</insert>
+
+	<select id="getVisitCount" resultType="int">
+		select count from story_visit_count
+	</select>
+
+	<select id="getVisitorCount" resultType="int">
+		select count(`ip`) from story_anonymous_access
+	</select>
 </mapper>

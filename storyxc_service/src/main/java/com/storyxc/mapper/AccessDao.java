@@ -23,4 +23,8 @@ public interface AccessDao {
     void addVisitorStatistics(@Param("remoteAddr") String remoteAddr,
                               @Param("visitorLocation") String visitorLocation,
                               @Param("loginTime") String loginTime);
+
+    Integer getVisitCount();
+
+    Integer getVisitorCount();
 }

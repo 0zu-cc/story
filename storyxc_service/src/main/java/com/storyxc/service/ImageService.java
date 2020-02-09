@@ -23,4 +23,6 @@ public interface ImageService {
     Integer updateLikeCount(String date);
 
     Integer getDownloadCount(String flag);
+
+    Image getTodayPic();
 }

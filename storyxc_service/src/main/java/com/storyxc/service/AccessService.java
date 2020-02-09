@@ -1,14 +1,20 @@
 package com.storyxc.service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 /**
  * @author Xc
  * @description
  * @createdTime 2020/1/19 11:35
  */
 public interface AccessService {
-    void addVisitorInfo(String remoteAddr, String visitorLocation);
 
     void updateVisitCount();
 
-    void addVisitorStatistics(String remoteAddr, String visitorLocation);
+    Integer getVisitorCount();
+
+    Integer getVisitCount();
+
+    Map visitWebSite(HttpServletRequest request);
 }

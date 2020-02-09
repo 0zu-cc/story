@@ -25,4 +25,6 @@ public interface ImageDao {
     Integer getLikeCountByDate(String date);
 
     Integer getDownloadCount(String flag);
+
+    Image getTodayPic();
 }

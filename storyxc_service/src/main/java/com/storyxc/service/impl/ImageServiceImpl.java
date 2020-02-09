@@ -65,4 +65,9 @@ public class ImageServiceImpl implements ImageService {
     public Integer getDownloadCount(String flag) {
         return imageDao.getDownloadCount(flag);
     }
+
+    @Override
+    public Image getTodayPic() {
+        return imageDao.getTodayPic();
+    }
 }
