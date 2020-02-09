@@ -6,7 +6,7 @@ import com.storyxc.pojo.Image;
 import com.storyxc.pojo.QueryPageBean;
 import com.storyxc.service.ImageService;
 import com.storyxc.util.PageHelperUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,9 +62,11 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Integer updateLikeCount(String date, HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (StringUtils.equals(cookie.getName(),"like_"+date)){
-                return null;
+        if(cookies!=null){
+            for (Cookie cookie : cookies) {
+                if (StringUtils.equals(cookie.getName(),"like_"+date)){
+                    return null;
+                }
             }
         }
         Cookie cookie = new Cookie("like_"+date,"1");
