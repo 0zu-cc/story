@@ -72,11 +72,18 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/*.yml</exclude>
+				</excludes>
 			</resource>
 			<resource>
-				<directory>src/main/resources.${spring.profiles.active}</directory>
-				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+				<!--<directory>src/main/resources.${spring.profiles.active}</directory>-->
+				<includes>
+					<include>application.yml</include>
+					<include>application-${spring.profiles.active}.yml</include>
+				</includes>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 		<plugins>

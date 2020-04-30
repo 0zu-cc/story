@@ -13,18 +13,15 @@
     </select>
 
     <select id="queryCategoryArticle" resultType="map">
-		select
-			sc.category_name as categoryName,sc.category_id as categoryId,count(0) as count,sa.status
-		from
+		SELECT
+			sc.category_name AS categoryName,
+			sc.category_id AS categoryId,
+			count( STATUS ) AS count
+		FROM
 			story_category sc
-		LEFT JOIN
-			story_article_category sac
-		on
-			sc.category_id = sac.category_id
-		LEFT JOIN
-			story_article sa
-		on  sac.article_id = sa.article_id
-		where status = 1
-		GROUP BY sc.category_name
+		LEFT JOIN story_article_category sac ON sac.category_id = sc.category_id
+		LEFT JOIN story_article sa ON sac.article_id = sa.article_id
+		GROUP BY
+			category_name
 	</select>
 </mapper>

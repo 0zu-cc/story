@@ -135,7 +135,7 @@
 	</delete>
 
 	<update id="updateArticleStatus" parameterType="article">
-		update story_artilce set status = '1' where article_id = #{id}
+		update story_article set status = '1' where article_id = #{id}
 	</update>
 
 	<delete id="deleteArticle" parameterType="int">
