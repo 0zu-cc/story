@@ -14,4 +14,16 @@ public interface CategoryDao {
     List<Category> queryAllCategories();
 
     List<Map<String, Integer>> queryCategoryArticle();
+
+    List<Category> findPage(String queryString);
+
+    void addCategory(Category category);
+
+    Category queryCategoryById(Integer id);
+
+    void updateCategory(Category category);
+
+    void deleteCategoryArticleMapping(Integer id);
+
+    void deleteCategoryById(Integer id);
 }

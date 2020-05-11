@@ -24,4 +24,34 @@
 		GROUP BY
 			category_name
 	</select>
+
+	<select id="findPage" parameterType="string" resultMap="categoryMap">
+		select * from story_category
+		<if test="value != null and value.length>0">
+			<where>
+				category_name like #{value}
+			</where>
+		</if>
+	</select>
+
+	<insert id="addCategory" parameterType="category">
+		insert into story_categroy
+		(category_name) values (#{categoryName})
+	</insert>
+
+	<select id="queryCategoryById" parameterType="int" resultMap="categoryMap">
+		SELECT * FROM STORY_CATEGORY WHERE CATEGORY_ID = #{id}
+	</select>
+
+	<update id="updateCategory" parameterType="category">
+		UPDATE STORY_CATEGORY SET CATEGORY_NAME = #{categoryName} WHERE CATEGORY_ID = #{categoryId}
+	</update>
+
+	<delete id="deleteCategoryArticleMapping" parameterType="int">
+		DELETE FROM STORY_ARTICLE_CATEGORY WHERE CATEGORY_ID = #{id}
+	</delete>
+
+	<delete id="deleteCategoryById" parameterType="int">
+		DELETE FROM STORY_CATEGORY WHERE CATEGORY_ID = #{id}
+	</delete>
 </mapper>
