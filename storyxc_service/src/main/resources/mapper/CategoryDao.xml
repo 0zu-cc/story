@@ -9,7 +9,7 @@
     </resultMap>
 
     <select id="queryAllCategories" resultMap="categoryMap">
-        select * from story_category
+        select * from story_category order by category_id
     </select>
 
     <select id="queryCategoryArticle" resultType="map">
@@ -35,7 +35,7 @@
 	</select>
 
 	<insert id="addCategory" parameterType="category">
-		insert into story_categroy
+		insert into story_category
 		(category_name) values (#{categoryName})
 	</insert>
 
