@@ -76,22 +76,23 @@ public class ArticleServiceImpl implements ArticleService {
             if (article.getTagIds() != null && article.getTagIds().size() > 0) {
                 articleDao.setArticleTag(article);
             }
-            String articleMain = article.getArticleMain();
-            //正则表达式匹配文章中的图片路径
-            String regex = "http://io\\.storyxc.com/storyxc/\\w+(\\.png|\\.jpg|\\.jpeg|\\.gif)";
-            Set<String> picSet = new HashSet<>();
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(articleMain);
-            while (matcher.find()) {
-                picSet.add(matcher.group());
-            }
-            if (picSet.size() > 0) {
-                //处理set中元素 去掉http://io.storyxc.com/
-                Set<String> imgFileNameSet = new HashSet<>();
-                picSet.forEach(item -> imgFileNameSet.add(item.substring(22)));
-                //存入redis
-                redisTemplate.boundHashOps("article_pic").put(article.getId().toString(), JSON.toJSONString(imgFileNameSet));
-            }
+        }
+        //redis存储图片数据
+        String articleMain = article.getArticleMain();
+        //正则表达式匹配文章中的图片路径
+        String regex = "http://io.storyxc.com/.*(\\.png|\\.jpg|\\.jpeg|\\.gif)";
+        Set<String> picSet = new HashSet<>();
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(articleMain);
+        while (matcher.find()) {
+            picSet.add(matcher.group());
+        }
+        if (picSet.size() > 0) {
+            //处理set中元素 去掉http://io.storyxc.com/
+            Set<String> imgFileNameSet = new HashSet<>();
+            picSet.forEach(item -> imgFileNameSet.add(item.substring(22)));
+            //存入redis
+            redisTemplate.boundHashOps("article_pic").put(article.getId().toString(), JSON.toJSONString(imgFileNameSet));
         }
     }
 
