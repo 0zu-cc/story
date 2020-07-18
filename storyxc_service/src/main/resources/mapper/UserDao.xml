@@ -13,6 +13,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="head_pic" property="headPic"/>
         <result column="last_login" property="lastLogin"/>
+        <result column="last_login_ip" property="lastLoginIp"/>
     </resultMap>
     
     <resultMap id="userRolePermissionMap" type="com.storyxc.pojo.User" extends="userMap">
@@ -103,5 +104,9 @@
 
     <update id="changePwd" parameterType="string">
         update story_user set password = #{password} where username = #{username}
+    </update>
+
+    <update id="updateLoginTimeByName" parameterType="String">
+        update story_user set last_login = current_timestamp , last_login_ip = #{remoteAddr} where username = #{username}
     </update>
 </mapper>

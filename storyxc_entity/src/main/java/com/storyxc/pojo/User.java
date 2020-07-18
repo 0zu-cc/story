@@ -22,5 +22,6 @@ public class User implements Serializable {
     private String createdTime;
     private String headPic;
     private String lastLogin;
+    private String lastLoginIp;
     private List<Role> roles;
 }
