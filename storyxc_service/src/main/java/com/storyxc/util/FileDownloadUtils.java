@@ -37,7 +37,8 @@ public class FileDownloadUtils {
                 String tempFileName = "images/" + fileName;
                 qiNiuUtils.uploadViaByte(byteArray, tempFileName);
             }
-            saveFileToDisk(reuseInputStream, dirPath, fileName);
+            // 20210505 壁纸不再保存到服务器
+            //saveFileToDisk(reuseInputStream, dirPath, fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
