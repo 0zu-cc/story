@@ -22,7 +22,7 @@
 		LEFT JOIN story_article_category sac ON sac.category_id = sc.category_id
 		LEFT JOIN story_article sa ON sac.article_id = sa.article_id
 		GROUP BY
-			category_name
+			category_id
 	</select>
 
 	<select id="findPage" parameterType="string" resultMap="categoryMap">
