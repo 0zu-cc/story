@@ -46,4 +46,9 @@ public class ImageController {
         return new Result(true,StatusCode.OK,"点赞成功",count);
     }
 
+    @GetMapping("/pull")
+    public void pull() throws Exception{
+        imageService.pull();
+    }
+
 }

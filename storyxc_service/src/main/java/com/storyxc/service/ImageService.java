@@ -7,6 +7,7 @@ import com.storyxc.pojo.QueryPageBean;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
  * @author Xc
  * @description
@@ -28,4 +29,6 @@ public interface ImageService {
     Integer getDownloadCount(String flag);
 
     Image getTodayPic();
+
+    void pull() throws Exception;
 }
